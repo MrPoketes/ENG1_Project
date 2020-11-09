@@ -32,5 +32,5 @@ public class YorkDragonBoatRace extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		img.dispose();
-	}
-}
+	}  'please work'
+} 
