@@ -7,6 +7,7 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.components.ScreenPosition;
 import com.mygdx.game.components.Size;
@@ -39,14 +40,25 @@ public class RenderSprites extends EntitySystem {
         batch.begin();
         for (Entity entity : this.getEngine().getEntitiesFor(family)) {
             Texture texture = new Texture(entity.getComponent(Sprite.class).currentSprite);
-            //currently doesn't handle rotations because that's harder
+            TextureRegion textureRegion = new TextureRegion(texture);
+            float originX = (entity.getComponent(ScreenPosition.class).x)/2;
+            float originY = (entity.getComponent(ScreenPosition.class).y)/2;
             batch.draw(
-                    texture,
-                    entity.getComponent(ScreenPosition.class).x,
-                    entity.getComponent(ScreenPosition.class).y,
-                    entity.getComponent(Size.class).x,
-                    entity.getComponent(Size.class).y
-            );
+                textureRegion,
+                // Screen position
+                entity.getComponent(ScreenPosition.class).x,
+                entity.getComponent(ScreenPosition.class).y,
+                // Origin x and y
+                originX,
+                originY,
+                // Width and height
+                entity.getComponent(Size.class).x,
+                entity.getComponent(Size.class).y,
+                // ScaleX and scaleY
+                1f,1f,
+                // Rotation
+                entity.getComponent(ScreenPosition.class).rotation
+                );
         }
         batch.end();
         //finish later

@@ -19,7 +19,7 @@ public class YorkDragonBoatRace extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		engine = new Engine();
 		engine.addSystem(new RenderSprites(batch));
-		engine.addEntity(new TestEntity(10, 200));
+		engine.addEntity(new TestEntity(50, 200));
 
 	}
 
