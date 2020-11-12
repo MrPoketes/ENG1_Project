@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.entities.TestEntity;
 import com.mygdx.game.systems.RenderSprites;
+import com.mygdx.game.systems.RenderText;
+import com.mygdx.game.entities.TestText;
 
 public class YorkDragonBoatRace extends ApplicationAdapter {
 	Engine engine;
@@ -19,7 +21,9 @@ public class YorkDragonBoatRace extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		engine = new Engine();
 		engine.addSystem(new RenderSprites(batch));
-		engine.addEntity(new TestEntity(10, 200));
+		engine.addSystem(new RenderText(batch));
+		engine.addEntity(new TestEntity(50, 200));
+		engine.addEntity(new TestText(200,300,"Hello world"));
 
 	}
 

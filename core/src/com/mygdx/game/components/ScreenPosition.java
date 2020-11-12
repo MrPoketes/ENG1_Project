@@ -8,6 +8,10 @@ public class ScreenPosition implements Component {
     public Integer x, y;
     public Float rotation;
 
+    public ScreenPosition(Integer x, Integer y){
+        this.x = x;
+        this.y = y;
+    }
     public ScreenPosition(Integer x, Integer y, Float rotation) {
         this.x = x;
         this.y = y;
