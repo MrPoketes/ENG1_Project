@@ -61,6 +61,5 @@ public class RenderSprites extends EntitySystem {
                 );
         }
         batch.end();
-        //finish later
     }
 }

@@ -13,6 +13,6 @@ public class TestText extends Entity {
     public TestText(Integer x, Integer y,String text) {
         super();
         this.add(new Text(text));
-        this.add(new Size(100, 100)).add(new ScreenPosition(x, y, 40f));
+        this.add(new ScreenPosition(x, y));
     }
 }
