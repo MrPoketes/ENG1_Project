@@ -10,7 +10,7 @@ public class box extends Entity {
 
 
     public box(Integer x, Integer y, Integer width, Integer length) { 
-        super(); 
+        
         this.add(new Size(width, length));
         this.add(new ScreenPosition(x,y, 0f));
 
