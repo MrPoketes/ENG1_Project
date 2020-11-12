@@ -23,7 +23,7 @@ public class RenderSprites extends EntitySystem {
     public RenderSprites (SpriteBatch batch) {
         super();
         this.family = Family.all(ScreenPosition.class, Size.class, Sprite.class).get();
-        this.batch = batch;
+        this.batch = batch; 
     }
 
     @Override
