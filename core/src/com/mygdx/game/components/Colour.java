@@ -7,9 +7,9 @@ public class Colour implements Component {
     public static final ComponentMapper<Colour> Map = ComponentMapper.getFor(Colour.class);
 
 
-    private String colour;
+     public Color colour;
 
-    public Colour(String colour) { 
+    public Colour(Color colour) { 
         this.colour = colour;
     }
 }
