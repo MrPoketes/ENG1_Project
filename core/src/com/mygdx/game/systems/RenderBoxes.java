@@ -20,12 +20,12 @@ import com.mygdx.game.components.Box;
 import java.util.Iterator;
 
 public class RenderBoxes extends EntitySystem {
-    private ShapeRenderer shape; 
+    private ShapeRenderer shape; //for shapes instead of spriteBatch we use shapeRenderer() 
     private final Family family; 
 
     public RenderBoxes(ShapeRenderer shape) { 
         super(); 
-        this.family = Family.all(Size.class, ScreenPosition.class, Box.class, Colour.class).get();
+        this.family = Family.all(Size.class, ScreenPosition.class, Box.class, Colour.class).get(); //gets all corresponding boxes 
         this.shape = shape;
 
     }
@@ -40,14 +40,14 @@ public class RenderBoxes extends EntitySystem {
         for (Entity entity: this.getEngine().getEntitiesFor(family)){
             float x = entity.getComponent(ScreenPosition.class).x;
             float y = entity.getComponent(ScreenPosition.class).y;
-
             Integer xSize = entity.getComponent(Size.class).x;
             Integer ySize = entity.getComponent(Size.class).y;
             Color colour = entity.getComponent(Colour.class).colour;
+            // extracts all the values from the box class 
 
-            shape.begin(ShapeType.Filled);
+            shape.begin(ShapeType.Filled); // for now just fills the box, but we can change it later to be unfilled or dotted. 
             shape.setColor(colour);
-            shape.rect(x,y,xSize,ySize);
+            shape.rect(x,y,xSize,ySize); //draws the rectangle 
             shape.end();
         }
     }

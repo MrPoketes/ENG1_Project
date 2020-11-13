@@ -21,7 +21,7 @@ public class YorkDragonBoatRace extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 	ShapeRenderer shape;
-	Color Green = Color.GREEN; 
+	
 
 	@Override
 	public void create () {
@@ -33,7 +33,9 @@ public class YorkDragonBoatRace extends ApplicationAdapter {
 		engine.addSystem(new RenderBoxes(shape));
 		engine.addEntity(new TestEntity(50, 200));
 		engine.addEntity(new TestText(200,300,"Hello world"));
-		engine.addEntity(new box(530,430, 80,20, "healthBar", Green));
+		engine.addEntity(new box(530,430, 80,20, "healthBar", Color.GREEN));
+		engine.addEntity(new box(530,400, 80,20, "exhuastionBar", Color.YELLOW));
+		engine.addEntity(new box(530,370, 80,20, "cooldownbar", Color.BROWN));
 	}
 
 	@Override
