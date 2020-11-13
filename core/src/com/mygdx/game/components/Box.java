@@ -9,6 +9,5 @@ public class Box implements Component {
 
     public Box(String box) {
         this.box = box;
-
     }
 }
