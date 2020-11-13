@@ -17,7 +17,7 @@ public class RenderBoxes extends EntitySystem {
     private SpriteBatch batch; 
     private final Family family; 
 
-    public RenderBoxes() { 
+    public RenderBoxes(SpriteBatch batch) { 
         super(); 
         this.family.all(Size.class, ScreenPosition.class, Box.class);
         this.batch = batch;

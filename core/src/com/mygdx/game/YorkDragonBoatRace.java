@@ -10,6 +10,8 @@ import com.mygdx.game.entities.TestEntity;
 import com.mygdx.game.systems.RenderSprites;
 import com.mygdx.game.systems.RenderText;
 import com.mygdx.game.entities.TestText;
+import com.mygdx.game.entities.box;
+import com.mygdx.game.systems.RenderBoxes;
 
 public class YorkDragonBoatRace extends ApplicationAdapter {
 	Engine engine;
@@ -20,11 +22,12 @@ public class YorkDragonBoatRace extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		engine = new Engine();
+		engine.addSystem(new RenderBoxes(batch));
 		engine.addSystem(new RenderSprites(batch));
 		engine.addSystem(new RenderText(batch));
 		engine.addEntity(new TestEntity(50, 200));
 		engine.addEntity(new TestText(200,300,"Hello world"));
-
+		engine.addEntity(new box(70,200, 80,20, "healthBar"));
 	}
 
 	@Override
