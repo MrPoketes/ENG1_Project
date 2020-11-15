@@ -13,8 +13,6 @@ import com.mygdx.game.components.ScreenPosition;
 import com.mygdx.game.components.Size;
 import com.mygdx.game.components.Sprite;
 
-import java.util.Iterator;
-
 public class RenderSprites extends EntitySystem {
 
     private SpriteBatch batch;
