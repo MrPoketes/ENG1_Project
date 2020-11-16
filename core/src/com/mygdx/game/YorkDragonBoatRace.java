@@ -23,7 +23,7 @@ public class YorkDragonBoatRace extends ApplicationAdapter {
 	Texture img;
 	ShapeRenderer shape;
 	Color Green = Color.GREEN; 
-
+// asd
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
