@@ -25,7 +25,7 @@ public class RenderBoxes extends EntitySystem {
 
     public RenderBoxes(ShapeRenderer shape) { 
         super(); 
-        this.family = Family.all(Size.class, ScreenPosition.class, Box.class, Colour.class).get();
+        this.family = Family.all(Size.class, ScreenPosition.class, Colour.class).get();
         this.shape = shape;
 
     }
