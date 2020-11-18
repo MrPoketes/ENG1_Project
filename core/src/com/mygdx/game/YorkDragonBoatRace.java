@@ -15,33 +15,26 @@ import com.mygdx.game.entities.TestText;
 import com.mygdx.game.entities.*;
 import com.mygdx.game.systems.RenderBoxes;
 import com.mygdx.game.screens.MainMenu;
+import com.badlogic.gdx.Game;
+import com.mygdx.game.utils.Assets;
 
-public class YorkDragonBoatRace extends ApplicationAdapter {
+public class YorkDragonBoatRace extends Game {
 
-	Engine engine;
-	SpriteBatch batch;
-	Texture img;
-	ShapeRenderer shape;
-	MainMenu main;
+
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		shape = new ShapeRenderer();
-		engine = new Engine();
-		engine.addSystem(new RenderSprites(batch));
-		engine.addSystem(new RenderText(batch));
-		engine.addSystem(new RenderBoxes(shape));
-		main = new MainMenu(engine);
+		Assets.load();
+		super.setScreen(new MainMenu(this));
+
 	}
 
 	@Override
 	public void render () {
-		engine.update(0f);
+		super.render();
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
+		Assets.dispose();
 	}
 }
