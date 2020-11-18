@@ -7,12 +7,13 @@ import com.mygdx.game.components.*;
 
 public class PlayerBoat extends Entity {
 
-    public PlayerBoat(World world, Integer posX, Integer posY, Integer sizeX, Integer sizeY, String sprite,
+    public PlayerBoat(World world, float posX, float posY, float sizeX, float sizeY, String sprite,
                       String name, Float topSpeed, Float acceleration, Float maneuverability, Integer robustness) {
         super();
         //render related components
+        //screen position is set on first physics tick
         this.add(new ScreenPosition(0,0, 0f));
-        this.add(new Size(sizeX, sizeY));
+        this.add(new Size((int) sizeX * Constants.PIXELS_PER_METER, (int) sizeY * Constants.PIXELS_PER_METER));
         this.add(new Sprite(sprite));
 
         this.add(new Box2dBody(world, false, posX, posY, sizeX, sizeY, 1));

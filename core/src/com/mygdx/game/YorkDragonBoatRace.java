@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.entities.Obstacle;
 import com.mygdx.game.entities.PlayerBoat;
 import com.mygdx.game.entities.TestEntity;
+import com.mygdx.game.systems.PhysicsUpdate;
 import com.mygdx.game.systems.RenderSprites;
 import com.mygdx.game.systems.RenderText;
 import com.mygdx.game.entities.TestText;
@@ -30,10 +31,14 @@ public class YorkDragonBoatRace extends ApplicationAdapter {
 		engine.addSystem(new RenderSprites(batch));
 		engine.addSystem(new RenderText(batch));
 		engine.addSystem(new UpdateRenderComponentsFromBody());
+		engine.addSystem(new PhysicsUpdate(world));
 		//engine.addEntity(new TestEntity(50, 200));
 		//engine.addEntity(new TestText(200,300,"Hello world"));
-		engine.addEntity(new PlayerBoat(world, 3, 2, 50, 150, "badlogic.jpg", "testBoat", 10f, 10f, 10f, 10));
-		engine.addEntity(new Obstacle(world, 4, -2, 50, 50, 0, "Tree Branch.jpg"));
+		engine.addEntity(new PlayerBoat(world, 0, 0, 1f, 3f, "badlogic.jpg", "testBoat", 10f, 10f, 10f, 10));
+		engine.addEntity(new Obstacle(world, 4f, -1f, 1f, 1f, 0f, -0.5f, "Tree Branch.jpg"));
+		engine.addEntity(new Obstacle(world, 1f, 5f, 1f, 1f, 0f, 0f, "Tree Branch.jpg"));
+		engine.addEntity(new Obstacle(world, 6f, 0f, 1f, 1f, 0f, 0.5f, "Tree Branch.jpg"));
+		engine.addEntity(new Obstacle(world, -2f, 6f, 1f, 1f, 1f, 0f, "Tree Branch.jpg"));
 
 	}
 

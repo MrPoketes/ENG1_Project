@@ -28,19 +28,27 @@ public class UpdateRenderComponentsFromBody extends EntitySystem {
     public void update(float deltaTime) {
 
         //get the player's boat (assumes there is only one)
+        int coordinateOffsetX;
+        int coordinateOffsetY;
         Body playerBoat = this.getEngine().getEntitiesFor(Family.all(PlayerControlled.class).get()).first().getComponent(Box2dBody.class).body;
-        //to centre the "camera" on the player, all physical objects are rendered offset by the player's boat
-        //and the centre of the screen
-        int coordinateOffsetX = (int) (-playerBoat.getPosition().x * Constants.PIXELS_PER_METER + (Gdx.graphics.getWidth() / 2));
-        int coordinateOffsetY = (int) (-playerBoat.getPosition().y * Constants.PIXELS_PER_METER + (Gdx.graphics.getHeight() / 2));
+        if (!Constants.NON_RELATIVE_CAMERA) {
+            //to centre the "camera" on the player, all physical objects are rendered offset by the player's boat
+            //and the centre of the screen
+            coordinateOffsetX = (int) (-playerBoat.getPosition().x * Constants.PIXELS_PER_METER + (Gdx.graphics.getWidth() / 2));
+            coordinateOffsetY = (int) (-playerBoat.getPosition().y * Constants.PIXELS_PER_METER + (Gdx.graphics.getHeight() / 2));
+        }
+        else{
+            coordinateOffsetX = (int) (Gdx.graphics.getWidth() / 2);
+            coordinateOffsetY = (int) (Gdx.graphics.getHeight() / 2);
+        }
 
         for (Entity entity : this.getEngine().getEntitiesFor(family)) {
-            Box2dBody body = entity.getComponent(Box2dBody.class);
+            Body body = entity.getComponent(Box2dBody.class).body;
             ScreenPosition screenPosition = entity.getComponent(ScreenPosition.class);
             Size size = entity.getComponent(Size.class);
-            screenPosition.x = (int) (body.body.getPosition().x * Constants.PIXELS_PER_METER + coordinateOffsetX - size.x/2);
-            screenPosition.y = (int) (body.body.getPosition().y * Constants.PIXELS_PER_METER + coordinateOffsetY - size.y/2);
-            screenPosition.rotation = (float) (body.body.getAngle() * 180 / 3.14);
+            screenPosition.x = (int) (body.getPosition().x * Constants.PIXELS_PER_METER + coordinateOffsetX - size.x/2);
+            screenPosition.y = (int) (body.getPosition().y * Constants.PIXELS_PER_METER + coordinateOffsetY - size.y/2);
+            screenPosition.rotation = (float) (body.getAngle() * 180 / 3.14);
         }
     }
 }

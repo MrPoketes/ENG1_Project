@@ -1,7 +1,9 @@
 package com.mygdx.game.components;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.mygdx.game.Constants;
 
 public class Box2dBody implements Component {
     public static final ComponentMapper<Box2dBody> Map = ComponentMapper.getFor(Box2dBody.class);
@@ -15,9 +17,10 @@ public class Box2dBody implements Component {
         else bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(positionX, positionY);
         this.body = world.createBody(bodyDef);
+        this.body.setSleepingAllowed(false);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(sizeX, sizeY);
+        shape.setAsBox(sizeX/2, sizeY/2);
         body.createFixture(shape, density);
         //box2d doesn't dispose of shapes automatically for some reason
         shape.dispose();
