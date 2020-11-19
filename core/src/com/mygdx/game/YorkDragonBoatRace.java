@@ -8,11 +8,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Color;
+import com.mygdx.game.entities.DisplayBox;
 import com.mygdx.game.entities.TestEntity;
 import com.mygdx.game.systems.RenderSprites;
 import com.mygdx.game.systems.RenderText;
 import com.mygdx.game.entities.TestText;
-import com.mygdx.game.entities.box;
+// import com.mygdx.game.entities.box;
+import com.mygdx.game.entities.box_copy;
 import com.mygdx.game.systems.RenderBoxes;
 
 public class YorkDragonBoatRace extends ApplicationAdapter {
@@ -33,7 +35,8 @@ public class YorkDragonBoatRace extends ApplicationAdapter {
 		engine.addSystem(new RenderBoxes(shape));
 		engine.addEntity(new TestEntity(50, 200));
 		engine.addEntity(new TestText(200,300,"Hello world"));
-		engine.addEntity(new box(530,430, 80,20, "healthBar", Green));
+		engine.addEntity(new box_copy(530, 430, 80, 20, "healthBar", Green));
+		engine.addEntity(new DisplayBox());
 	}
 
 	@Override
