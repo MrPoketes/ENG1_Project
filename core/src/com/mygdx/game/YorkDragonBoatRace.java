@@ -13,6 +13,7 @@ import com.mygdx.game.systems.RenderSprites;
 import com.mygdx.game.systems.RenderText;
 import com.mygdx.game.entities.TestText;
 import com.mygdx.game.entities.box;
+import com.mygdx.game.entities.healthBox;
 import com.mygdx.game.systems.RenderBoxes;
 
 public class YorkDragonBoatRace extends ApplicationAdapter {
@@ -33,9 +34,9 @@ public class YorkDragonBoatRace extends ApplicationAdapter {
 		engine.addSystem(new RenderBoxes(shape));
 		engine.addEntity(new TestEntity(50, 200));
 		engine.addEntity(new TestText(200,300,"Hello world"));
-		engine.addEntity(new box(530,430, 80,20, "healthBar", Color.GREEN));
-		engine.addEntity(new box(530,400, 80,20, "exhuastionBar", Color.YELLOW));
-		engine.addEntity(new box(530,370, 80,20, "cooldownbar", Color.BROWN));
+		engine.addEntity(new healthBox(530,430, 100,20, "healthBar", Color.GREEN));
+		engine.addEntity(new box(530,400, 100,20, "exhuastionBar", Color.YELLOW));
+		engine.addEntity(new box(530,370, 100,20, "cooldownbar", Color.BROWN));
 	}
 
 	@Override
