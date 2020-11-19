@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.screens.*;
+import com.mygdx.game.screens.GameScreen;
 
 public class MainMenu extends AbstractScreen {
     
@@ -34,7 +35,7 @@ public class MainMenu extends AbstractScreen {
         camera = new OrthographicCamera();
 
         infoBtnRect = new Rectangle(20,50,300,150);
-        startBtnRect = new Rectangle(50,50,300,150);
+        startBtnRect = new Rectangle(1200,50,300,150);
         touchPoint = new Vector3();
         Gdx.input.setInputProcessor(stage);
     }
@@ -66,13 +67,14 @@ public class MainMenu extends AbstractScreen {
     }
     public void handleInput(){
 
-        // Event Listener for Start Button click
         if(Gdx.input.justTouched()){
             camera.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
 
+            // Event Listener for Start Button click
             if(startBtnRect.contains(touchPoint.x,touchPoint.y)){
                 game.setScreen(new GameScreen(game));
             }
+            // Event Listener for Info button click
             else if(infoBtnRect.contains(touchPoint.x,touchPoint.y)){
                 game.setScreen(new InfoScreen(game));
             }

@@ -29,12 +29,14 @@ public class Assets {
     private static final String START_BUTTON = "buttons/startButton.png";
     private static final String FONT = "fonts/8BITWONDER";
     private static final String SKIN = "skins/skin.json";
+    private static final String BACK_BUTTON = "buttons/backButton.png";
 
     private static AssetManager manager = new AssetManager();
 
     public static TextureRegion mainBg;
     public static TextureRegion infoBtn;
     public static TextureRegion startBtn;
+    public static TextureRegion backBtn;
 
     public static BitmapFont[] fonts;
     public static Skin skin;
@@ -45,12 +47,14 @@ public class Assets {
         manager.load(MAINSCREEN_BG,Texture.class);
         manager.load(INFO_BUTTON,Texture.class);
         manager.load(START_BUTTON,Texture.class);
+        manager.load(BACK_BUTTON,Texture.class);
 
         manager.finishLoading();
 
         mainBg = new TextureRegion(manager.get(MAINSCREEN_BG,Texture.class));
         infoBtn = new TextureRegion(manager.get(INFO_BUTTON,Texture.class));
         startBtn = new TextureRegion(manager.get(START_BUTTON,Texture.class));
+        backBtn = new TextureRegion(manager.get(BACK_BUTTON,Texture.class));
         
         // Fonts
 
