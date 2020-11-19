@@ -43,12 +43,10 @@ public class DialogueBox extends Entity {
     //This method is to detect if the user type Key 'Y' or 'N'.
     //It returns true if Key 'Y' is pressed while returns false if Key 'N' is pressed.
     public boolean isConfirmed() {
-        while (true) {
-            if (Gdx.input.isKeyPressed(Keys.Y)) {
-                return true;
-            } else if (Gdx.input.isKeyPressed(Keys.X)) {
-                return false;
-            }
+        if (Gdx.input.isKeyPressed(Keys.Y)) {
+            return true;
+        } else if (Gdx.input.isKeyPressed(Keys.N)) {
+            return false;
         }
     }
 
