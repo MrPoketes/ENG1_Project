@@ -34,6 +34,7 @@ public class YorkDragonBoatRace extends ApplicationAdapter {
 		engine.addSystem(new RenderBoxes(shape));
 		engine.addEntity(new TestEntity(50, 200));
 		engine.addEntity(new TestText(200,300,"Hello world"));
+		engine.addEntity(new box(530,430, 100,20, "outlineBar", Color.WHITE));
 		engine.addEntity(new healthBox(530,430, 100,20, "healthBar", Color.GREEN));
 		engine.addEntity(new box(530,400, 100,20, "exhuastionBar", Color.YELLOW));
 		engine.addEntity(new box(530,370, 100,20, "cooldownbar", Color.BROWN));

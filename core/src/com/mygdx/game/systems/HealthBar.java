@@ -17,7 +17,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.components.Box;
-import com.mygdx.game.components.HealthBar;
+import com.mygdx.game.components.healthBar;
 import java.util.Iterator;
 
 public class HealthBar extends EntitySystem {
@@ -25,7 +25,7 @@ public class HealthBar extends EntitySystem {
 
     public HealthBar() {
         super();
-        this.family = Family.all(Size.class, ScreenPosition.class, Box.class, Colour.class, HealthBar.class).get(); 
+        this.family = Family.all(Size.class, ScreenPosition.class, Box.class, Colour.class, healthBar.class).get(); 
     }
 
 
@@ -37,4 +37,4 @@ public class HealthBar extends EntitySystem {
     }   
     
 
-}  
+} 
