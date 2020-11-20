@@ -16,6 +16,7 @@ import com.mygdx.game.entities.TestText;
 // import com.mygdx.game.entities.box;
 import com.mygdx.game.entities.box_copy;
 import com.mygdx.game.systems.RenderBoxes;
+import com.badlogic.ashley.core.Entity;
 
 public class YorkDragonBoatRace extends ApplicationAdapter {
 
@@ -23,29 +24,36 @@ public class YorkDragonBoatRace extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 	ShapeRenderer shape;
-	Color Green = Color.GREEN; 
+	Color Green = Color.GREEN;
 
 	@Override
-	public void create () {
+	public void create() {
 		batch = new SpriteBatch();
 		shape = new ShapeRenderer();
 		engine = new Engine();
 		engine.addSystem(new RenderSprites(batch));
 		engine.addSystem(new RenderText(batch));
 		engine.addSystem(new RenderBoxes(shape));
-		engine.addEntity(new TestEntity(50, 200));
-		engine.addEntity(new TestText(200,300,"Hello world"));
-		engine.addEntity(new box_copy(530, 430, 80, 20, "healthBar", Green));
-		engine.addEntity(new DisplayBox());
+		// engine.addEntity(new TestEntity(50, 200));
+		// engine.addEntity(new TestText(200, 300, "Hello world"));
+		// engine.addEntity(new TestText(540, 440, "Name should below healthBar"));
+		// engine.addEntity(new box_copy(530, 430, 80, 20, "healthBar", Green));
+		// engine.addEntity(new TestText(540, 440, "Name should above healthBar"));
+
+		DisplayBox displayBoxInstance = new DisplayBox();
+		for (Entity e : displayBoxInstance.getAll()) {//use for-each loop to render all entites in the displaybox instance
+			engine.addEntity(e);
+		}
+
 	}
 
 	@Override
-	public void render () {
+	public void render() {
 		engine.update(0f);
 	}
-	
+
 	@Override
-	public void dispose () {
+	public void dispose() {
 		batch.dispose();
 		img.dispose();
 	}

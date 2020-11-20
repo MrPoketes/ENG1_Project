@@ -11,10 +11,12 @@ import com.badlogic.gdx.graphics.Color;
 
 public class box_copy extends Entity {
     public ScreenPosition position;
+    public Size size;
 
     public box_copy(Integer x, Integer y, Integer width, Integer length, String name, Color colour) {
 
         this.add(new Size(width, length));
+        this.size = new Size(width, length);
         this.add(new ScreenPosition(x, y, 0f));
         this.position = new ScreenPosition(x, y, 0f);
         this.add(new Box(name));
