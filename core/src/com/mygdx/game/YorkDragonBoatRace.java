@@ -14,6 +14,9 @@ import com.mygdx.game.systems.RenderText;
 import com.mygdx.game.entities.TestText;
 import com.mygdx.game.entities.box;
 import com.mygdx.game.entities.healthBox;
+import com.mygdx.game.entities.ExhaustionBox;
+import com.mygdx.game.entities.leftCooldownBox;
+import com.mygdx.game.entities.rightCooldownBox;
 import com.mygdx.game.systems.RenderBoxes;
 
 public class YorkDragonBoatRace extends ApplicationAdapter {
@@ -22,8 +25,8 @@ public class YorkDragonBoatRace extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 	ShapeRenderer shape;
-	
-
+				
+				
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -34,12 +37,20 @@ public class YorkDragonBoatRace extends ApplicationAdapter {
 		engine.addSystem(new RenderBoxes(shape));
 		engine.addEntity(new TestEntity(50, 200));
 		engine.addEntity(new TestText(200,300,"Hello world"));
-		engine.addEntity(new box(530,430, 100,20, "outlineBar", Color.WHITE));
+
+		engine.addEntity(new box(530,430, 100,20, "outlineBarHealth", Color.WHITE));
+		engine.addEntity(new box(530,400, 100,20, "outlineBarExhaustion", Color.WHITE));
+		engine.addEntity(new box(20,350, 20, 100, "outlineLeft", Color.WHITE));
+		engine.addEntity(new box(60,350, 20, 100, "outlineRight", Color.WHITE));
+
 		engine.addEntity(new healthBox(530,430, 100,20, "healthBar", Color.GREEN));
-		engine.addEntity(new box(530,400, 100,20, "exhuastionBar", Color.YELLOW));
-		engine.addEntity(new box(530,370, 100,20, "cooldownbar", Color.BROWN));
+		engine.addEntity(new ExhaustionBox(530,400,100,20,"Exhaustion",Color.YELLOW));
+
+		engine.addEntity(new leftCooldownBox(20,350, 20, 100, "leftCooldown", Color.RED));
+		engine.addEntity(new rightCooldownBox(60,350, 20, 80, "rightCooldown", Color.RED));
 	}
 
+	
 	@Override
 	public void render () {
 		engine.update(0f);

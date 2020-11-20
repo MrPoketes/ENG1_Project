@@ -18,23 +18,21 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.components.Box;
 import com.mygdx.game.components.healthBar;
+import com.mygdx.game.components.Exhaustion;
 import java.util.Iterator;
 
-public class HealthBar extends EntitySystem {
+public class ExhaustionBar extends EntitySystem {
     private final Family family;
 
-    public HealthBar() {
+    public ExhaustionBar() {
         super();
-        this.family = Family.all(Size.class, ScreenPosition.class, Box.class, Colour.class, healthBar.class).get(); 
+        this.family = Family.all(Size.class, ScreenPosition.class, Box.class, Colour.class, Exhaustion.class).get(); 
     }
-
 
     @Override
     public void update(float deltaTime) {
-        //Integer currentHealth = this.getEngine().getEntitiesFor(Family.all(PlayerControlled.class).get()).first().getComponent(DynamicBoatStats.class).health;
+        //Integer currentExhaustion = this.getEngine().getEntitiesFor(Family.all(PlayerControlled.class).get()).first().getComponent(DynamicBoatStats.class).exhaustion;
         //Entity entity = this.getEngine().getEntitiesFor(family).first();
-        //entity.getComponent(Size.class).x = currentHealth;
-    }   
-    
-
-} 
+        //entity.getComponent(Size.class).x = currentExhaustion;
+    }
+}
