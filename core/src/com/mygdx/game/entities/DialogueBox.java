@@ -12,7 +12,8 @@ import com.mygdx.game.components.TestComponent;
 import com.mygdx.game.components.Box;
 
 public class DialogueBox extends Entity {
-    // DialogueBox is a dialog box that asks whether the user would like to act on the action.
+    // DialogueBox is a dialog box that asks whether the user would like to act on
+    // the action.
     // Attributes:
     // question, It is the question asks what to do next.
     // firstOption, It is the first option for the user to choose.
@@ -29,28 +30,35 @@ public class DialogueBox extends Entity {
     }
 
     public DialogueBox(String questionText, String firstOptionText, String secondOptionText) {
-        this(questionText, firstOptionText, secondOptionText, new box_copy(100, 100, 400, 300, "NameUndefined", Color.WHITE));
+        this(questionText, firstOptionText, secondOptionText,
+                new box_copy(300, 200, 400, 300, "NameUndefined", Color.WHITE));
     }
 
     public DialogueBox(String questionText, String firstOptionText, String secondOptionText, box_copy frameBox) {
         super();
         this.frameBox = frameBox;
-        this.question = new TestText(frameBox.position.x / 2 - 50, frameBox.position.y / 2 - 50, questionText);// to centre the question
-        this.firstOption = new TestText(frameBox.position.x / 2 + 50, frameBox.position.y / 2 - 50, firstOptionText); // to put the first option in the bottom left of the dialogue box
-        this.secondOption = new TestText(frameBox.position.x / 2 + 50, frameBox.position.y / 2 + 50, secondOptionText); // to put the first option in the bottom right of the dialogue box
+        this.question = new TestText(frameBox.position.x / 2 - 50, frameBox.position.y / 2 - 50, questionText);
+        // to centre the question
+        this.firstOption = new TestText(frameBox.position.x / 2 + 50, frameBox.position.y / 2 - 50, firstOptionText);
+        // to put the first option in the bottom left of the dialogue box
+        this.secondOption = new TestText(frameBox.position.x / 2 + 50, frameBox.position.y / 2 + 50, secondOptionText);
+        // to put the first option in the bottom right of the dialogue box
+
     }
 
-    //This method is to detect if the user type Key 'Y' or 'N'.
-    //It returns true if Key 'Y' is pressed while returns false if Key 'N' is pressed.
+    // This method is to detect if the user types Key 'Y' or 'N'.
+    // It returns true if Key 'Y' is pressed while returns false if Key 'N' is
+    // pressed.
     public boolean isConfirmed() {
         if (Gdx.input.isKeyPressed(Keys.Y)) {
             return true;
         } else if (Gdx.input.isKeyPressed(Keys.N)) {
             return false;
         }
+        return true;
     }
 
-    // This method is to detect if the user type Key 'Y' or 'N'.
+    // This method is to detect if the user types Key 'Y' or 'N'.
     // It returns true if Key 'N' is pressed while returns false if Key 'Y' is
     // pressed.
     public boolean isCancelled() {
