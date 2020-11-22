@@ -12,38 +12,29 @@ import com.mygdx.game.entities.TestEntity;
 import com.mygdx.game.systems.RenderSprites;
 import com.mygdx.game.systems.RenderText;
 import com.mygdx.game.entities.TestText;
-import com.mygdx.game.entities.box;
+import com.mygdx.game.entities.*;
 import com.mygdx.game.systems.RenderBoxes;
+import com.mygdx.game.screens.MainMenu;
+import com.badlogic.gdx.Game;
+import com.mygdx.game.utils.Assets;
 
-public class YorkDragonBoatRace extends ApplicationAdapter {
+public class YorkDragonBoatRace extends Game {
 
-	Engine engine;
-	SpriteBatch batch;
-	Texture img;
-	ShapeRenderer shape;
-	Color Green = Color.GREEN; 
 
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		shape = new ShapeRenderer();
-		engine = new Engine();
-		engine.addSystem(new RenderSprites(batch));
-		engine.addSystem(new RenderText(batch));
-		engine.addSystem(new RenderBoxes(shape));
-		engine.addEntity(new TestEntity(50, 200));
-		engine.addEntity(new TestText(200,300,"Hello world"));
-		engine.addEntity(new box(530,430, 80,20, "healthBar", Green));
+		Assets.load();
+		super.setScreen(new MainMenu(this));
+
 	}
 
 	@Override
 	public void render () {
-		engine.update(0f);
+		super.render();
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
+		Assets.dispose();
 	}
 }
