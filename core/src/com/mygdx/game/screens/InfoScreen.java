@@ -38,7 +38,7 @@ public class InfoScreen extends AbstractScreen {
         super.render(delta);
         batch.begin();
         batch.draw(Assets.mainBg,0,0,1980,1080);
-        batch.draw(Assets.backBtn,1200,50,300,150);
+        batch.draw(Assets.backBtn,1200,30,300,150);
         batch.end();
         stage.act(delta);
         stage.draw();
@@ -59,9 +59,6 @@ public class InfoScreen extends AbstractScreen {
             if(backBtnRect.contains(touch.x,touch.y)){
                 game.setScreen(new MainMenu(game));
             }
-        }
-        else if(Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)){
-            game.setScreen(new MainMenu(game));
         }
     }
     public void dispose(){
