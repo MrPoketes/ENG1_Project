@@ -37,8 +37,7 @@ public class RenderSprites extends EntitySystem {
 
         batch.begin();
         for (Entity entity : this.getEngine().getEntitiesFor(family)) {
-            Texture texture = new Texture(entity.getComponent(Sprite.class).currentSprite);
-            TextureRegion textureRegion = new TextureRegion(texture);
+            TextureRegion textureRegion = new TextureRegion(entity.getComponent(Sprite.class).currentSprite);
             float originX = (entity.getComponent(Size.class).x)/2;
             float originY = (entity.getComponent(Size.class).y)/2;
             batch.draw(
@@ -57,6 +56,7 @@ public class RenderSprites extends EntitySystem {
                 // Rotation
                 entity.getComponent(ScreenPosition.class).rotation
                 );
+
         }
         batch.end();
     }

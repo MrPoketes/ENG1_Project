@@ -30,10 +30,10 @@ public class UpdateRenderComponentsFromBody extends EntitySystem {
         //get the player's boat (assumes there is only one)
         int coordinateOffsetX;
         int coordinateOffsetY;
-        Body playerBoat = this.getEngine().getEntitiesFor(Family.all(PlayerControlled.class).get()).first().getComponent(Box2dBody.class).body;
         if (!Constants.NON_RELATIVE_CAMERA) {
             //to centre the "camera" on the player, all physical objects are rendered offset by the player's boat
             //and the centre of the screen
+            Body playerBoat = this.getEngine().getEntitiesFor(Family.all(PlayerControlled.class).get()).first().getComponent(Box2dBody.class).body;
             coordinateOffsetX = (int) (-playerBoat.getPosition().x * Constants.PIXELS_PER_METER + (Gdx.graphics.getWidth() / 2));
             coordinateOffsetY = (int) (-playerBoat.getPosition().y * Constants.PIXELS_PER_METER + (Gdx.graphics.getHeight() / 2));
         }
