@@ -40,9 +40,14 @@ public class YorkDragonBoatRace extends ApplicationAdapter {
 		// engine.addEntity(new box(530, 430, 80, 20, "healthBar", Green));
 		// engine.addEntity(new TestText(540, 440, "Name should above healthBar"));
 
-		for (Entity e : (new DisplayBox()).getAll()) {
+		DisplayBox displayBoxInstance = new DisplayBox();
+		for (Entity e : displayBoxInstance.getAll()) {
 			// use for-each loop to render displaybox
 			engine.addEntity(e);
+		}
+
+		if (displayBoxInstance.isCancelled()) {
+			engine.addEntity(new TestEntity(50, 200));
 		}
 
 	}
