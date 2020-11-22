@@ -11,7 +11,7 @@ public class Obstacle extends Entity {
         super();
 
         this.add(new ScreenPosition(0,0, 0f));
-        this.add(new Size((int) sizeX * Constants.PIXELS_PER_METER, (int) sizeY * Constants.PIXELS_PER_METER));
+        this.add(new Size((int) (sizeX * Constants.PIXELS_PER_METER), (int) (sizeY * Constants.PIXELS_PER_METER)));
         this.add(new Sprite(sprite));
         //If an obstacle is created with a fixedVelocity of 0, it is made static.
         if ((fixedVelocityX == 0) & (fixedVelocityY == 0)){

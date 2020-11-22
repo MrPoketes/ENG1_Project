@@ -5,10 +5,10 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Constants;
 import com.mygdx.game.components.*;
 
-public class PlayerBoat extends Entity {
+public class CPUBoat extends Entity {
 
-    public PlayerBoat(World world, float posX, float posY, float sizeX, float sizeY, String sprite,
-                      String name, Float topSpeed, Float acceleration, Float maneuverability, Integer robustness) {
+    public CPUBoat(World world, float posX, float posY, float sizeX, float sizeY, String sprite,
+                   String name, Float topSpeed, Float acceleration, Float maneuverability, Integer robustness) {
         super();
         //render related components
         //screen position is set on first physics tick
@@ -19,7 +19,7 @@ public class PlayerBoat extends Entity {
         this.add(new Box2dBody(world, false, posX, posY, sizeX, sizeY, 1));
         this.add(new BoatStats(name, topSpeed, acceleration, maneuverability, robustness));
         this.add(new DynamicBoatStats(robustness));
-        this.add(new PlayerControlled());
+        this.add(new CPUControlled());
 
     }
 }

@@ -16,6 +16,8 @@ public class Box2dBody implements Component {
         if (isStatic) bodyDef.type = BodyDef.BodyType.StaticBody;
         else bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(positionX, positionY);
+        bodyDef.linearDamping = 0.3f;
+        bodyDef.angularDamping = 1f;
         this.body = world.createBody(bodyDef);
         this.body.setSleepingAllowed(false);
 

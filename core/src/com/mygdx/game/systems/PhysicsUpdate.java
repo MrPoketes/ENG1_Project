@@ -22,8 +22,6 @@ public class PhysicsUpdate extends EntitySystem {
 
     //Sets all FixedVelocity objects to their velocity.
     //Runs a physics tick on all objects.
-    //If any boat collisions occur, fire the boat collision event.
-    //If an obstacle collides with an edge, flip its FixedVelocity.
     @Override
     public void update(float deltaTime) {
         Family fixedVelocityEntities = Family.all(Box2dBody.class, FixedVelocity.class).get();
@@ -35,7 +33,7 @@ public class PhysicsUpdate extends EntitySystem {
             Vector2 test = entity.getComponent(Box2dBody.class).body.getLinearVelocity();
         }
 
-        world.step(1/60f, 6, 2);
+        world.step(deltaTime, 6, 2);
 
 
 
