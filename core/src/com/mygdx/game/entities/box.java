@@ -9,11 +9,11 @@ import com.mygdx.game.components.Box;
 import com.mygdx.game.components.Colour;
 import com.badlogic.gdx.graphics.Color;
 
-public class box_copy extends Entity {
+public class box extends Entity {
     public ScreenPosition position;
     public Size size;
 
-    public box_copy(Integer x, Integer y, Integer width, Integer length, String name, Color colour) {
+    public box(Integer x, Integer y, Integer width, Integer length, String name, Color colour) {
 
         this.add(new Size(width, length));
         this.size = new Size(width, length);

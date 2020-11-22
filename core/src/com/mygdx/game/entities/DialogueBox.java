@@ -26,7 +26,7 @@ public class DialogueBox extends Entity {
     public TestText question;
     public TestText firstOption;
     public TestText secondOption;
-    public box_copy frameBox;
+    public box frameBox;
 
     public Array<Entity> subEntities;
 
@@ -36,10 +36,10 @@ public class DialogueBox extends Entity {
 
     public DialogueBox(String questionText, String firstOptionText, String secondOptionText) {
         this(questionText, firstOptionText, secondOptionText,
-                new box_copy(100, 100, 400, 300, "NameUndefined", Color.BLACK));
+                new box(100, 100, 400, 300, "NameUndefined", Color.BLACK));
     }
 
-    public DialogueBox(String questionText, String firstOptionText, String secondOptionText, box_copy frameBox) {
+    public DialogueBox(String questionText, String firstOptionText, String secondOptionText, box frameBox) {
         super();
         this.frameBox = frameBox;
         this.question = new TestText(frameBox.position.x + frameBox.size.x / 2 - 100,
@@ -57,7 +57,7 @@ public class DialogueBox extends Entity {
         this.subEntities.add(this.question);
         this.subEntities.add(this.firstOption);
         this.subEntities.add(this.secondOption);
-        this.subEntities.add(this.frameBox);// Note: It currently hides the other texts.
+        this.subEntities.add(this.frameBox);// Note: It currently hides the other texts unless ZIndex is applied.
     }
 
     // This method is to detect if the user types Key 'Y' or 'N'.

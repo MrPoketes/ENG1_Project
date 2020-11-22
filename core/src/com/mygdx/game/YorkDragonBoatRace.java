@@ -14,7 +14,7 @@ import com.mygdx.game.systems.RenderSprites;
 import com.mygdx.game.systems.RenderText;
 import com.mygdx.game.entities.TestText;
 // import com.mygdx.game.entities.box;
-import com.mygdx.game.entities.box_copy;
+import com.mygdx.game.entities.box;
 import com.mygdx.game.systems.RenderBoxes;
 import com.badlogic.ashley.core.Entity;
 
@@ -37,11 +37,11 @@ public class YorkDragonBoatRace extends ApplicationAdapter {
 		// engine.addEntity(new TestEntity(50, 200));
 		// engine.addEntity(new TestText(200, 300, "Hello world"));
 		// engine.addEntity(new TestText(540, 440, "Name should below healthBar"));
-		// engine.addEntity(new box_copy(530, 430, 80, 20, "healthBar", Green));
+		// engine.addEntity(new box(530, 430, 80, 20, "healthBar", Green));
 		// engine.addEntity(new TestText(540, 440, "Name should above healthBar"));
 
-		DisplayBox displayBoxInstance = new DisplayBox();
-		for (Entity e : displayBoxInstance.getAll()) {//use for-each loop to render all entites in the displaybox instance
+		for (Entity e : (new DisplayBox()).getAll()) {
+			// use for-each loop to render displaybox
 			engine.addEntity(e);
 		}
 
