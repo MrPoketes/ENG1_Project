@@ -25,6 +25,7 @@ public class RenderText extends EntitySystem {
         super();
         this.family = Family.all(ScreenPosition.class, Text.class).get();
         this.batch = batch;
+        this.font = new BitmapFont();
     }
     @Override
     public void addedToEngine(Engine engine) {
@@ -32,7 +33,6 @@ public class RenderText extends EntitySystem {
     }
     @Override
     public void update(float deltaTime) {
-        font = new BitmapFont();
         batch.begin();
         for (Entity entity: this.getEngine().getEntitiesFor(family)){
             CharSequence text = entity.getComponent(Text.class).text;
