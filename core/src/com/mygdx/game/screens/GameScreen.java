@@ -10,12 +10,14 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.entities.*;
 import com.mygdx.game.systems.*;
+import com.mygdx.game.components.*;
 import static com.badlogic.gdx.Gdx.graphics;
 import java.util.List;
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ public class GameScreen extends AbstractScreen {
     private OrthographicCamera camera;
     private SpriteBatch batch;
     World world;
-
+    private ShapeRenderer shape;
     // This variable is used to determine what boats will the CPU have.
     private List<String> boatNames = new ArrayList<String>();
     
@@ -37,6 +39,7 @@ public class GameScreen extends AbstractScreen {
 		world = new World(new Vector2(0,0), true);
 		batch = new SpriteBatch();
         engine = new Engine();
+        shape = new ShapeRenderer();
 
         boatNames.add("Cyan");
         boatNames.add("Brown");
@@ -48,11 +51,8 @@ public class GameScreen extends AbstractScreen {
         addingSystems();
         playerSetup(selectedBoat);
         cpuSetup();
-        // obstacleSetup();
-		// engine.addEntity(new Obstacle(world, 0.4f, -0.1f, 0.1f, 0.1f, 0f, -0.05f, "Tree Branch.jpg"));
-		// engine.addEntity(new Obstacle(world, -0.6f, 0.5f, 0.1f, 0.1f, 0f, 0f, "Tree Branch.jpg"));
-		// engine.addEntity(new Obstacle(world, 0.6f, 0f, 0.1f, 0.1f, 0f, 0.05f, "Tree Branch.jpg"));
-		// engine.addEntity(new Obstacle(world, -0.2f, 0.6f, 0.1f, 0.1f, 0.1f, 0f, "Tree Branch.jpg"));
+        addSystemBars();
+        obstacleSetup();
     }
     private void addingSystems(){
         engine.addSystem(new RenderSprites(batch));
@@ -60,8 +60,12 @@ public class GameScreen extends AbstractScreen {
 		engine.addSystem(new UpdateRenderComponentsFromBody());
 		engine.addSystem(new PhysicsUpdate(world));
 		engine.addSystem(new PlayerBoatControl());
-		engine.addSystem(new CPUBoatControl());
+        engine.addSystem(new CPUBoatControl());
+        engine.addSystem(new RenderBoxes(shape));
     }
+    /*
+    * Method to assign a boat to the player from his selection in the MainMenu screen
+    */
     private void playerSetup(String selectedBoat){
         /*
         * Every boat should have different stats
@@ -87,6 +91,10 @@ public class GameScreen extends AbstractScreen {
         boatNames.remove(selectedBoat);
 
     }
+    /*
+    * Method to assign boats to cpu. 
+    * After the player has selected his boat, 4 random boats will be chosen for cpu.
+    */
     private void cpuSetup(){
         Random rand = new Random();
         float x = -4f;
@@ -117,6 +125,25 @@ public class GameScreen extends AbstractScreen {
             x+=2f;
             boatNames.remove(n);
         }
+    }
+    // Method to draw the Health, exhaustion and cooldown bars.
+    // Currently not functional 
+    private void addSystemBars(){
+        engine.addEntity(new Box(525,755, 510,30, "outlineBarHealth", Color.WHITE));
+		engine.addEntity(new Box(525,715, 510,30, "outlineBarExhaustion", Color.WHITE));
+		engine.addEntity(new Box(725,175, 30, 110, "outlineLeft", Color.WHITE));
+		engine.addEntity(new Box(765,175, 30, 110, "outlineRight", Color.WHITE));
+
+		engine.addEntity(new HealthBox(530,760, 500,20, "healthBar", Color.GREEN));
+		engine.addEntity(new ExhaustionBox(530,720,500,20,"Exhaustion",Color.YELLOW));
+
+		engine.addEntity(new LeftCooldownBox(730,180, 20, 100, "leftCooldown", Color.RED));
+		engine.addEntity(new RightCooldownBox(770,180, 20, 80, "rightCooldown", Color.RED));
+    }
+    // Method to draw obstacles randomly in the map
+    // Not functional
+    private void obstacleSetup(){
+
     }
     @Override
     public void render(float delta){

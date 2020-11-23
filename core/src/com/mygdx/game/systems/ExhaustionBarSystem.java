@@ -16,17 +16,17 @@ import com.mygdx.game.components.Colour;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.Color;
-import com.mygdx.game.components.Box;
-import com.mygdx.game.components.healthBar;
+import com.mygdx.game.components.BoxComponent;
+import com.mygdx.game.components.HealthBar;
 import com.mygdx.game.components.Exhaustion;
 import java.util.Iterator;
 
-public class ExhaustionBar extends EntitySystem {
+public class ExhaustionBarSystem extends EntitySystem {
     private final Family family;
 
-    public ExhaustionBar() {
+    public ExhaustionBarSystem() {
         super();
-        this.family = Family.all(Size.class, ScreenPosition.class, Box.class, Colour.class, Exhaustion.class).get(); 
+        this.family = Family.all(Size.class, ScreenPosition.class, BoxComponent.class, Colour.class, Exhaustion.class).get(); 
     }
 
     @Override

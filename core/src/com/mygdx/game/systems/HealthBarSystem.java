@@ -16,16 +16,16 @@ import com.mygdx.game.components.Colour;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.Color;
-import com.mygdx.game.components.Box;
-import com.mygdx.game.components.healthBar;
+import com.mygdx.game.components.BoxComponent;
+import com.mygdx.game.components.HealthBar;
 import java.util.Iterator;
 
-public class HealthBar extends EntitySystem {
+public class HealthBarSystem extends EntitySystem {
     private final Family family;
 
-    public HealthBar() {
+    public HealthBarSystem() {
         super();
-        this.family = Family.all(Size.class, ScreenPosition.class, Box.class, Colour.class, healthBar.class).get(); 
+        this.family = Family.all(Size.class, ScreenPosition.class, BoxComponent.class, Colour.class, HealthBar.class).get(); 
     }
 
 

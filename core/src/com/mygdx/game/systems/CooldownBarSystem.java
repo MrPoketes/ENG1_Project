@@ -16,20 +16,20 @@ import com.mygdx.game.components.Colour;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.Color;
-import com.mygdx.game.components.Box;
-import com.mygdx.game.components.healthBar;
-import com.mygdx.game.components.leftCooldown;
-import com.mygdx.game.components.rightCooldown;
+import com.mygdx.game.components.BoxComponent;
+import com.mygdx.game.components.HealthBar;
+import com.mygdx.game.components.LeftCooldown;
+import com.mygdx.game.components.RightCooldown;
 import java.util.Iterator;
 
-public class CooldownBar extends EntitySystem {
+public class CooldownBarSystem extends EntitySystem {
     private final Family familyLeft;
     private final Family familyRight;
 
-    public CooldownBar() {
+    public CooldownBarSystem() {
         super();
-        this.familyLeft = Family.all(Size.class, ScreenPosition.class, Box.class, Colour.class, leftCooldown.class).get();
-        this.familyRight = Family.all(Size.class, ScreenPosition.class, Box.class, Colour.class, rightCooldown.class).get();
+        this.familyLeft = Family.all(Size.class, ScreenPosition.class, BoxComponent.class, Colour.class, LeftCooldown.class).get();
+        this.familyRight = Family.all(Size.class, ScreenPosition.class, BoxComponent.class, Colour.class, RightCooldown.class).get();
     }
 
 

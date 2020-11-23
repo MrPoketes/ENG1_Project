@@ -16,7 +16,7 @@ import com.mygdx.game.components.Colour;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.Color;
-import com.mygdx.game.components.Box;
+import com.mygdx.game.components.BoxComponent;
 import java.util.Iterator;
 
 public class RenderBoxes extends EntitySystem {
@@ -25,7 +25,7 @@ public class RenderBoxes extends EntitySystem {
 
     public RenderBoxes(ShapeRenderer shape) { 
         super(); 
-        this.family = Family.all(Size.class, ScreenPosition.class, Box.class, Colour.class).get(); //gets all corresponding boxes 
+        this.family = Family.all(Size.class, ScreenPosition.class, BoxComponent.class, Colour.class).get(); //gets all corresponding boxes 
         this.shape = shape;
 
     }
