@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.entities.*;
 import com.mygdx.game.systems.*;
 import com.mygdx.game.components.*;
+import com.badlogic.gdx.Input;
 import static com.badlogic.gdx.Gdx.graphics;
 import java.util.List;
 import java.util.ArrayList;
@@ -145,6 +146,11 @@ public class GameScreen extends AbstractScreen {
     private void obstacleSetup(){
 
     }
+    // private void handleInput(){
+    //     if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+           
+    //     }
+    // }
     @Override
     public void render(float delta){
         super.render(delta);

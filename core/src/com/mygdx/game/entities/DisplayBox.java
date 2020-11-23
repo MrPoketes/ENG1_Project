@@ -9,7 +9,7 @@ import com.mygdx.game.components.ScreenPosition;
 import com.mygdx.game.components.Size;
 import com.mygdx.game.components.Sprite;
 import com.mygdx.game.components.TestComponent;
-import com.mygdx.game.components.Box;
+import com.mygdx.game.components.BoxComponent;
 
 public class DisplayBox extends DialogueBox {
     // Please use for-each loop to render displaybox.
