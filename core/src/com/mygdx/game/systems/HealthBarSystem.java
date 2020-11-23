@@ -31,9 +31,9 @@ public class HealthBarSystem extends EntitySystem {
 
     @Override
     public void update(float deltaTime) {
-        //Integer currentHealth = this.getEngine().getEntitiesFor(Family.all(PlayerControlled.class).get()).first().getComponent(DynamicBoatStats.class).health;
-        //Entity entity = this.getEngine().getEntitiesFor(family).first();
-        //entity.getComponent(Size.class).x = currentHealth;
+        // Integer currentHealth = this.getEngine().getEntitiesFor(Family.all(PlayerControlled.class).get()).first().getComponent(DynamicBoatStats.class).health;
+        // Entity entity = this.getEngine().getEntitiesFor(family).first();
+        // entity.getComponent(Size.class).x = currentHealth;
     }   
     
 

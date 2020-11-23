@@ -32,4 +32,24 @@ public class Box2dBody implements Component {
     public Box2dBody(World world, boolean isStatic, float positionX, float positionY, float sizeX, float sizeY) {
         this(world, isStatic, positionX, positionY, sizeX, sizeY, 0.0f);
     }
+    public Box2dBody(World world, boolean isStatic, float positionX, float positionY, float sizeX, float sizeY,float density, boolean line) {
+        BodyDef bodyDef = new BodyDef();
+        if (isStatic) bodyDef.type = BodyDef.BodyType.StaticBody;
+        else bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(positionX, positionY);
+        bodyDef.linearDamping = 0.3f;
+        bodyDef.angularDamping = 1f;
+        this.body = world.createBody(bodyDef);
+        this.body.setSleepingAllowed(false);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(sizeX/2, sizeY/2);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.density = density;
+        fixtureDef.isSensor = line;
+        body.createFixture(fixtureDef);
+
+        shape.dispose();
+}
 }

@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.components.BoxComponent;
 import com.mygdx.game.components.HealthBar;
 import com.mygdx.game.components.Exhaustion;
+import com.mygdx.game.components.*;
 import java.util.Iterator;
 
 public class ExhaustionBarSystem extends EntitySystem {
@@ -31,8 +32,10 @@ public class ExhaustionBarSystem extends EntitySystem {
 
     @Override
     public void update(float deltaTime) {
-        //Integer currentExhaustion = this.getEngine().getEntitiesFor(Family.all(PlayerControlled.class).get()).first().getComponent(DynamicBoatStats.class).exhaustion;
-        //Entity entity = this.getEngine().getEntitiesFor(family).first();
-        //entity.getComponent(Size.class).x = currentExhaustion;
+        double currentExhaustion = this.getEngine().getEntitiesFor(Family.all(PlayerControlled.class).get()).first().getComponent(DynamicBoatStats.class).exhaustion;
+        currentExhaustion = Math.round(currentExhaustion);
+        int a = (int)currentExhaustion;
+        Entity entity = this.getEngine().getEntitiesFor(family).first();
+        entity.getComponent(Size.class).x = a;
     }
 }

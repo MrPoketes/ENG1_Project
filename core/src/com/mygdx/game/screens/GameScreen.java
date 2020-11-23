@@ -23,6 +23,10 @@ import static com.badlogic.gdx.Gdx.graphics;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.physics.box2d.*;
+import com.mygdx.game.screens.LeaderboardScreen;
 
 public class GameScreen extends AbstractScreen {
 
@@ -30,10 +34,14 @@ public class GameScreen extends AbstractScreen {
     private OrthographicCamera camera;
     private SpriteBatch batch;
     World world;
+    private Stage stage;
     private ShapeRenderer shape;
     // This variable is used to determine what boats will the CPU have.
     private List<String> boatNames = new ArrayList<String>();
-    
+    private Entity playerBoat;
+    private long startTime;
+    private int checkpoint;
+    private List<Long> time = new ArrayList<Long>();
 
     public GameScreen(YorkDragonBoatRace game, String selectedBoat){
         super(game);
@@ -41,7 +49,7 @@ public class GameScreen extends AbstractScreen {
 		batch = new SpriteBatch();
         engine = new Engine();
         shape = new ShapeRenderer();
-
+        checkpoint = 0;
         boatNames.add("Cyan");
         boatNames.add("Brown");
         boatNames.add("Red");
@@ -50,10 +58,17 @@ public class GameScreen extends AbstractScreen {
         boatNames.add("Green");
 
         addingSystems();
+        lineRender();
         playerSetup(selectedBoat);
         cpuSetup();
+        createCollisionListener();
         addSystemBars();
         obstacleSetup();
+        startTime = System.currentTimeMillis();
+    }
+    @Override
+    public void resize(int width,int height){
+        batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
     }
     private void addingSystems(){
         engine.addSystem(new RenderSprites(batch));
@@ -63,6 +78,7 @@ public class GameScreen extends AbstractScreen {
 		engine.addSystem(new PlayerBoatControl());
         engine.addSystem(new CPUBoatControl());
         engine.addSystem(new RenderBoxes(shape));
+        // engine.addSystem(new ExhaustionBarSystem());
     }
     /*
     * Method to assign a boat to the player from his selection in the MainMenu screen
@@ -72,6 +88,7 @@ public class GameScreen extends AbstractScreen {
         * Every boat should have different stats
         */
         if(selectedBoat == "Cyan"){
+            // playerBoat = new PlayerBoat(world, 0, 0, 1f, 1f, "boats/cyanBoat.png", selectedBoat, 3f, 5f, 4f, 10);
             engine.addEntity(new PlayerBoat(world, 0, 0, 1f, 1f, "boats/cyanBoat.png", selectedBoat, 3f, 5f, 4f, 10));
         }
         else if(selectedBoat == "Brown"){
@@ -130,6 +147,7 @@ public class GameScreen extends AbstractScreen {
     // Method to draw the Health, exhaustion and cooldown bars.
     // Currently not functional 
     private void addSystemBars(){
+        // int exhaustion = (int) playerBoat.getComponent(DynamicBoatStats.class).exhaustion;
         engine.addEntity(new Box(525,755, 510,30, "outlineBarHealth", Color.WHITE));
 		engine.addEntity(new Box(525,715, 510,30, "outlineBarExhaustion", Color.WHITE));
 		engine.addEntity(new Box(725,175, 30, 110, "outlineLeft", Color.WHITE));
@@ -145,6 +163,46 @@ public class GameScreen extends AbstractScreen {
     // Not functional
     private void obstacleSetup(){
 
+    }
+    private void lineRender(){
+        engine.addEntity(new Line(0,0,"lines/checkpoint.png",world,0,20,1,1));
+        engine.addEntity(new Line(0,0,"lines/checkpoint.png",world,0,40,1,1));
+        engine.addEntity(new Line(0,0,"lines/finishline.png",world,0,60,1,1));
+        
+    }
+    private void createCollisionListener() {
+        world.setContactListener(new ContactListener() {
+
+            @Override
+            public void beginContact(Contact contact) {
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
+                checkpoint++;
+                if(checkpoint==3){
+                    game.setScreen(new LeaderboardScreen(game));
+                }
+                // time.add((System.currentTimeMillis() - startTime) / 1000));
+
+                System.out.println("Time elapsed in seconds = " + ((System.currentTimeMillis() - startTime) / 1000));
+                Gdx.app.log("beginContact", "between " + fixtureA.toString() + " and " + fixtureB.toString());
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
+                Gdx.app.log("endContact", "between " + fixtureA.toString() + " and " + fixtureB.toString());
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+            }
+
+        });
     }
     // private void handleInput(){
     //     if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
