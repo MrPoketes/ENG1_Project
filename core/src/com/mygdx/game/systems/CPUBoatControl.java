@@ -32,7 +32,6 @@ public class CPUBoatControl extends EntitySystem {
             }
             if (entity.getComponent(DynamicBoatStats.class).leftCooldown == 0){
                 BoatCommon.rowBoat(entity, false, true);
-                System.out.println(entity.getComponent(Box2dBody.class).body.getPosition().y);
             }
             BoatCommon.boatUpdate(entity);
         }

@@ -45,8 +45,8 @@ public class MainMenu extends AbstractScreen {
     private Stage stage;
     private String selectedBoat = "Cyan";
     
-    /*  For each boat there is a seperate array.
-        The first number indicates top speed, second - accelaration, third - maneuverability, last -   robustness
+    /*  For each boat there is a separate array.
+        The first number indicates top speed, second - acceleration, third - maneuverability, last -   robustness
         The maximum of stars a boat can have for a stat is 5.
         The boat list is as follows - cyan,brown,red,white,pink,green
     */
@@ -180,22 +180,22 @@ public class MainMenu extends AbstractScreen {
     */
     private void drawStars(){
         int index = 0;
-        if(selectedBoat == "Cyan"){
+        if(selectedBoat.equals("Cyan")){
             starLoop(0);
         }
-        else if(selectedBoat == "Brown"){
+        else if(selectedBoat.equals("Brown")){
             starLoop(1);
         }
-        else if(selectedBoat == "Red"){
+        else if(selectedBoat.equals("Red")){
             starLoop(2);
         }
-        else if(selectedBoat == "White"){
+        else if(selectedBoat.equals("White")){
             starLoop(3);
         }
-        else if(selectedBoat == "Pink"){
+        else if(selectedBoat.equals("Pink")){
             starLoop(4);
         }
-        else if(selectedBoat == "Green"){
+        else if(selectedBoat.equals("Green")){
             starLoop(5);
         }
     }
