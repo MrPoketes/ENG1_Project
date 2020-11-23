@@ -33,9 +33,8 @@ public class ExhaustionBarSystem extends EntitySystem {
     @Override
     public void update(float deltaTime) {
         double currentExhaustion = this.getEngine().getEntitiesFor(Family.all(PlayerControlled.class).get()).first().getComponent(DynamicBoatStats.class).exhaustion;
-        currentExhaustion = Math.round(currentExhaustion);
-        int a = (int)currentExhaustion;
+        int barLength = (int) (currentExhaustion * 480);
         Entity entity = this.getEngine().getEntitiesFor(family).first();
-        entity.getComponent(Size.class).x = a;
+        entity.getComponent(Size.class).x = barLength;
     }
 }

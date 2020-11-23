@@ -21,8 +21,13 @@ public class BoatCommon {
 
         dynamicBoatStats.rightCooldown = Math.max(0, dynamicBoatStats.rightCooldown -1);
         dynamicBoatStats.leftCooldown = Math.max(0, dynamicBoatStats.leftCooldown -1);
-        //Exhaustion goes to a minimum of 0.3, and reduces by 0.05% every tick.
-        dynamicBoatStats.exhaustion = Math.max(0.3f, dynamicBoatStats.exhaustion*0.9995);
+        dynamicBoatStats.damageDebounce = Math.max(0, dynamicBoatStats.damageDebounce -1);
+        //Exhaustion goes to a minimum of 0.3, and reduces by 0.01% every tick.
+        dynamicBoatStats.exhaustion = Math.max(0.3f, dynamicBoatStats.exhaustion*0.9999);
+
+        if (!dynamicBoatStats.isFinished) {
+            dynamicBoatStats.time += 1;
+        }
     }
 
     /*
@@ -37,8 +42,8 @@ public class BoatCommon {
 
         if (cooldown < 60){
             propelBoat(boat, isRight, isForwards);
-            //exhaustion increase is relative to remaining cooldown above 0 (and maybe unbalanced)
-            dynamicBoatStats.exhaustion *= 1 - ((double) cooldown) / 6000;
+            //exhaustion increase is relative to remaining cooldown above 0
+            dynamicBoatStats.exhaustion *= 1 - ((double) cooldown) / 10000;
             if (isRight) dynamicBoatStats.rightCooldown = 120;
             else dynamicBoatStats.leftCooldown = 120;
             return true;

@@ -16,7 +16,7 @@ public class CPUBoat extends Entity {
         this.add(new Size((int) (sizeX * Constants.PIXELS_PER_METER), (int) (sizeY * Constants.PIXELS_PER_METER)));
         this.add(new Sprite(sprite));
 
-        this.add(new Box2dBody(world, false, posX, posY, sizeX, sizeY, 1));
+        this.add(new Box2dBody(world, this, false, posX, posY, sizeX, sizeY, 1));
         this.add(new BoatStats(name, topSpeed, acceleration, maneuverability, robustness));
         this.add(new DynamicBoatStats(robustness));
         this.add(new CPUControlled());
