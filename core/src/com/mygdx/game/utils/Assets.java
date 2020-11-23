@@ -16,14 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Assets {
 
-	private static final int[] FONT_SIZES = new int[]{10, 20, 30, 50, 100};
-	
-	public static final int FONT_TEN = 0;
-	public static final int FONT_TWENTY = 1;
-	public static final int FONT_FORTY = 2;
-	public static final int FONT_FIFTY = 3;
-    public static final int FONT_HUNDRED = 4;
-    
     private static final String MAINSCREEN_BG = "backgrounds/mainScreenBg.png";
     private static final String INFO_BUTTON = "buttons/infoButton.png";
     private static final String START_BUTTON = "buttons/startButton.png";
@@ -33,13 +25,21 @@ public class Assets {
     private static final String GOLD_STAR = "stars/goldStar.png";
     private static final String GRAY_STAR = "stars/grayStar.png";
 
-    // Boat selects file paths
+    // Boat select file paths
     private static final String BROWN_SELECT = "boatSelect/brownBoatSelect.png";
     private static final String CYAN_SELECT = "boatSelect/cyanBoatSelect.png";
     private static final String RED_SELECT = "boatSelect/redBoatSelect.png";
     private static final String WHITE_SELECT = "boatSelect/whiteBoatSelect.png";
     private static final String PINK_SELECT = "boatSelect/pinkBoatSelect.png";
     private static final String GREEN_SELECT = "boatSelect/greenBoatSelect.png";
+
+    // Boats
+    private static final String BROWN_BOAT ="boats/brownBoat.png";
+    private static final String CYAN_BOAT = "boats/cyanBoat.png";
+    private static final String RED_BOAT = "boats/redBoat.png";
+    private static final String WHITE_BOAT = "boats/whiteBoat.png";
+    private static final String PINK_BOAT = "boats/pinkBoat.png";
+    private static final String GREEN_BOAT = "boats/greenBoat.png";
 
     private static AssetManager manager = new AssetManager();
 
@@ -58,8 +58,13 @@ public class Assets {
     public static TextureRegion pinkSelect;
     public static TextureRegion greenSelect;
 
-    public static BitmapFont[] fonts;
-    public static Skin skin;
+    // Boats
+    public static TextureRegion brownBoat;
+    public static TextureRegion cyanBoat;
+    public static TextureRegion redBoat;
+    public static TextureRegion whiteBoat;
+    public static TextureRegion pinkBoat;
+    public static TextureRegion greenBoat;
 
     @SuppressWarnings("deprecation")
     public static void load(){
@@ -78,6 +83,13 @@ public class Assets {
         manager.load(PINK_SELECT,Texture.class);
         manager.load(GREEN_SELECT,Texture.class);
 
+        manager.load(BROWN_BOAT,Texture.class);
+        manager.load(CYAN_BOAT,Texture.class);
+        manager.load(RED_BOAT,Texture.class);
+        manager.load(WHITE_BOAT,Texture.class);
+        manager.load(PINK_BOAT,Texture.class);
+        manager.load(GREEN_BOAT,Texture.class);
+
         manager.finishLoading();
 
         mainBg = new TextureRegion(manager.get(MAINSCREEN_BG,Texture.class));
@@ -95,14 +107,18 @@ public class Assets {
         pinkSelect = new TextureRegion(manager.get(PINK_SELECT,Texture.class));
         greenSelect = new TextureRegion(manager.get(GREEN_SELECT,Texture.class));
 
-        skin = new Skin();
+        // Boats
+        brownBoat = new TextureRegion(manager.get(BROWN_BOAT,Texture.class));
+        cyanBoat = new TextureRegion(manager.get(CYAN_BOAT,Texture.class));
+        redBoat = new TextureRegion(manager.get(RED_BOAT,Texture.class));
+        whiteBoat = new TextureRegion(manager.get(WHITE_BOAT,Texture.class));
+        pinkBoat = new TextureRegion(manager.get(PINK_BOAT,Texture.class));
+        greenBoat = new TextureRegion(manager.get(GREEN_BOAT,Texture.class));
+
     }
     public static void dispose(){
         manager.dispose();
         
-        for(BitmapFont f: fonts){
-			f.dispose();
-		}
     }
     
 }

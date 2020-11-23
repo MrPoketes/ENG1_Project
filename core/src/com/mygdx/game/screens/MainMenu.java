@@ -144,7 +144,7 @@ public class MainMenu extends AbstractScreen {
     // Click handler function for changing the screen
     private void handleScreenChange(){
         if(startBtnRect.contains(touchPoint.x,touchPoint.y)){
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new GameScreen(game,selectedBoat));
         }
         // Event Listener for Info button click
         else if(infoBtnRect.contains(touchPoint.x,touchPoint.y)){
