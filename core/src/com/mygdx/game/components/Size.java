@@ -11,4 +11,4 @@ public class Size implements Component {
         this.x = x;
         this.y = y;
     }
-}
+}        

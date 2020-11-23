@@ -20,7 +20,7 @@ public class YorkDragonBoatRace extends Game {
 	public void render () {
 		super.render();
 	}
-	
+
 	@Override
 	public void dispose () {
 		Assets.dispose();

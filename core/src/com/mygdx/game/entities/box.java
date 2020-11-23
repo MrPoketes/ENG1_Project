@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.Color;
 
 public class Box extends Entity {
 
-
     public Box(Integer x, Integer y, Integer width, Integer length, String name, Color colour) { 
         
         this.add(new Size(width, length));
@@ -19,6 +18,5 @@ public class Box extends Entity {
         this.add(new BoxComponent(name));
         this.add(new Colour(colour));
     }
-    
     
 }
