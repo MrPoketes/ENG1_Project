@@ -94,7 +94,7 @@ public class ResultsScreen extends AbstractScreen {
         super.render(delta);
         batch.begin();
         batch.draw(Assets.mainBg,0,0,1980,1080);
-        batch.draw(Assets.startBtn,1200,30,300,150);
+        batch.draw(Assets.nextBtn,1200,30,300,150);
 
         if (isGameOver){
             font.draw(batch,"you drowned",70,800);
