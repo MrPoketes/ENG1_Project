@@ -27,9 +27,11 @@ public class HealthBarSystem extends EntitySystem {
 
     @Override
     public void update(float deltaTime) {
-        Integer currentHealth = this.getEngine().getEntitiesFor(Family.all(PlayerControlled.class).get()).first().getComponent(DynamicBoatStats.class).health;
-        Entity entity = this.getEngine().getEntitiesFor(family).first();
-        entity.getComponent(Size.class).x = currentHealth*50;
+        Entity playerBoat = this.getEngine().getEntitiesFor(Family.all(PlayerControlled.class).get()).first();
+        Integer currentHealth = playerBoat.getComponent(DynamicBoatStats.class).health;
+        Entity bar = this.getEngine().getEntitiesFor(family).first();
+        int pixelsPerHealth = (500 / playerBoat.getComponent(BoatStats.class).robustness);
+        bar.getComponent(Size.class).x = currentHealth*pixelsPerHealth;
     }   
     
 

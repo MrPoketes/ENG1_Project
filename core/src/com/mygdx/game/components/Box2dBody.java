@@ -2,9 +2,7 @@ package com.mygdx.game.components;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.mygdx.game.Constants;
 
 public class Box2dBody implements Component {
     public static final ComponentMapper<Box2dBody> Map = ComponentMapper.getFor(Box2dBody.class);

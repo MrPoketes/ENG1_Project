@@ -30,7 +30,6 @@ public class PhysicsUpdate extends EntitySystem {
             float velocityX = entity.getComponent(FixedVelocity.class).velocityX;
             float velocityY = entity.getComponent(FixedVelocity.class).velocityY;
             entity.getComponent(Box2dBody.class).body.setLinearVelocity(new Vector2(velocityX, velocityY));
-            Vector2 test = entity.getComponent(Box2dBody.class).body.getLinearVelocity();
         }
 
         world.step(deltaTime, 6, 2);

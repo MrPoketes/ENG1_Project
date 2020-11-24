@@ -2,7 +2,7 @@ package com.mygdx.game.entities;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.physics.box2d.World;
-import com.mygdx.game.Constants;
+import com.mygdx.game.utils.Constants;
 import com.mygdx.game.components.*;
 
 public class Obstacle extends Entity {

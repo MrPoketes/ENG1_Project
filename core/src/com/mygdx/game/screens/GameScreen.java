@@ -28,6 +28,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.screens.LeaderboardScreen;
+import com.mygdx.game.utils.BoatData;
 
 public class GameScreen extends AbstractScreen {
 
@@ -38,27 +39,32 @@ public class GameScreen extends AbstractScreen {
     private Stage stage;
     private ShapeRenderer shape;
     // This variable is used to determine what boats will the CPU have.
-    private List<String> boatNames = new ArrayList<String>();
+    private List<Integer> boatNames = new ArrayList<Integer>(){{
+        add(0);
+        add(1);
+        add(2);
+        add(3);
+        add(4);
+        add(5);
+    }};
     private Entity playerBoat;
     private long startTime;
-    private List<Long> time = new ArrayList<Long>();
+    private List<Long> time = new ArrayList<>();
 
-    public GameScreen(YorkDragonBoatRace game, String selectedBoat){
+    public GameScreen(YorkDragonBoatRace game, int selectedBoat){
         super(game);
 		world = new World(new Vector2(0,0), true);
 		batch = new SpriteBatch();
         engine = new Engine();
         shape = new ShapeRenderer();
-        boatNames.add("Cyan");
-        boatNames.add("Brown");
-        boatNames.add("Red");
-        boatNames.add("White");
-        boatNames.add("Pink");
-        boatNames.add("Green");
 
         addingSystems();
-        engine.addEntity(new Line(world,0,20,50f,0.5f, "lines/checkpoint.png"));
-        playerSetup(selectedBoat);
+        //Create the finish line.
+        engine.addEntity(new Line(world,0,20,10f,0.1f, "lines/checkpoint.png"));
+        //Create the player's boat.
+        engine.addEntity(new PlayerBoat( world, 0, 0, BoatData.getEntityData().get(selectedBoat)));
+        boatNames.remove((Integer) selectedBoat);
+
         cpuSetup();
         createCollisionListener();
         addSystemBars();
@@ -82,67 +88,22 @@ public class GameScreen extends AbstractScreen {
         engine.addSystem(new CooldownBarSystem());
     }
     /*
-    * Method to assign a boat to the player from his selection in the MainMenu screen
-    */
-    private void playerSetup(String selectedBoat){
-        /*
-        * Every boat should have different stats
-        */
-        if(selectedBoat == "Cyan"){
-            // playerBoat = new PlayerBoat(world, 0, 0, 1f, 1f, "boats/cyanBoat.png", selectedBoat, 3f, 5f, 4f, 10);
-            engine.addEntity(new PlayerBoat(world, 0, 0, 1f, 1f, "boats/cyanBoat.png", selectedBoat, 3f, 5f, 4f, 10));
-        }
-        else if(selectedBoat == "Brown"){
-            engine.addEntity(new PlayerBoat(world, 0, 0, 1f, 1f, "boats/brownBoat.png", selectedBoat, 1.5f, 3f, 5f, 10));
-        }
-        else if(selectedBoat == "Red"){
-            engine.addEntity(new PlayerBoat(world, 0, 0, 1f, 1f, "boats/redBoat.png", selectedBoat, 1.5f, 3f, 5f, 10));
-        }
-        else if(selectedBoat == "White"){
-            engine.addEntity(new PlayerBoat(world, 0, 0, 1f, 1f, "boats/whiteBoat.png", selectedBoat, 1.5f, 3f, 5f, 10));
-        }
-        else if(selectedBoat == "Pink"){
-            engine.addEntity(new PlayerBoat(world, 0, 0, 1f, 1f, "boats/pinkBoat.png", selectedBoat, 1.5f, 3f, 5f, 10));
-        }
-        else if(selectedBoat == "Green"){
-            engine.addEntity(new PlayerBoat(world, 0, 0,1f, 1f, "boats/greenBoat.png", selectedBoat, 1.5f, 3f, 5f, 10));
-        }
-        boatNames.remove(selectedBoat);
-
-    }
-    /*
-    * Method to assign boats to cpu. 
-    * After the player has selected his boat, 4 random boats will be chosen for cpu.
+    * Creates CPU boats.
+    * Should be called after the player's boat has been created to avoid duplicates.
     */
     private void cpuSetup(){
         Random rand = new Random();
-        float x = -4f;
+        float posX = -1f;
         
         for(int i=0;i!=4;i++){
-            if(x==0f){
-                x+=2f;
+            //skip over the player's boat
+            if(posX==0f){
+                posX+=0.5f;
             }
-            int n = rand.nextInt(boatNames.size()-1);
-            if(boatNames.get(n) == "Cyan"){
-                engine.addEntity(new CPUBoat(world, x, 0, 1f, 1f, "boats/cyanBoat.png", boatNames.get(n), 3f, 5f, 4f, 10));
-            }
-            else if(boatNames.get(n) == "Brown"){
-                engine.addEntity(new CPUBoat(world, x, 0, 1f, 1f, "boats/brownBoat.png", boatNames.get(n), 1.5f, 3f, 5f, 10));
-            }
-            else if(boatNames.get(n) == "Green"){
-                engine.addEntity(new CPUBoat(world, x, 0, 1f, 1f, "boats/greenBoat.png", boatNames.get(n), 1.5f, 3f, 5f, 10));
-            }
-            else if(boatNames.get(n) == "Pink"){
-                engine.addEntity(new CPUBoat(world, x, 0, 1f, 1f, "boats/pinkBoat.png", boatNames.get(n), 1.5f, 3f, 5f, 10));
-            }
-            else if(boatNames.get(n) == "Red"){
-                engine.addEntity(new CPUBoat(world, x, 0, 1f, 1f, "boats/redBoat.png", boatNames.get(n), 1.5f, 3f, 5f, 10));
-            }
-            else if(boatNames.get(n) == "White"){
-                engine.addEntity(new CPUBoat(world, x, 0, 1f, 1f, "boats/whiteBoat.png", boatNames.get(n), 1.5f, 3f, 5f, 10));
-            }
-            x+=2f;
-            boatNames.remove(n);
+            int selectedBoat = rand.nextInt(boatNames.size()-1);
+            engine.addEntity(new CPUBoat( world, posX, 0, BoatData.getEntityData().get(boatNames.get(selectedBoat))));
+            boatNames.remove(selectedBoat);
+            posX+=0.5f;
         }
     }
     // Method to draw the Health, exhaustion and cooldown bars.

@@ -2,8 +2,10 @@ package com.mygdx.game.entities;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.physics.box2d.World;
-import com.mygdx.game.Constants;
+import com.mygdx.game.utils.Constants;
 import com.mygdx.game.components.*;
+
+import java.util.HashMap;
 
 public class PlayerBoat extends Entity {
 
@@ -21,5 +23,20 @@ public class PlayerBoat extends Entity {
         this.add(new DynamicBoatStats(robustness));
         this.add(new PlayerControlled());
 
+    }
+
+    /*
+    Convenience constructor that just takes the raw hashmap from BoatData.java
+     */
+    public PlayerBoat(World world, float posX, float posY, HashMap<String, Object> hashMap){
+        this(world, posX, posY,
+                (float) hashMap.get("sizeX"),
+                (float) hashMap.get("sizeY"),
+                (String) hashMap.get("sprite"),
+                (String) hashMap.get("name"),
+                (float) hashMap.get("topSpeed"),
+                (float) hashMap.get("acceleration"),
+                (float) hashMap.get("maneuverability"),
+                (int) hashMap.get("robustness"));
     }
 }

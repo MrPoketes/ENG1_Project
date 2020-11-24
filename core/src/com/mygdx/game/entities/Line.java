@@ -4,7 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.mygdx.game.components.*;
 import com.badlogic.gdx.physics.box2d.World;
 
-import static com.mygdx.game.Constants.PIXELS_PER_METER;
+import static com.mygdx.game.utils.Constants.PIXELS_PER_METER;
 
 public class Line extends Entity {
 

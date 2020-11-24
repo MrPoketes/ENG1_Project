@@ -33,7 +33,12 @@ public class CooldownBarSystem extends EntitySystem {
         Integer currentCooldownRight = this.getEngine().getEntitiesFor(Family.all(PlayerControlled.class).get()).first().getComponent(DynamicBoatStats.class).rightCooldown;
         Entity leftValue = this.getEngine().getEntitiesFor(familyLeft).first();
         Entity rightValue = this.getEngine().getEntitiesFor(familyRight).first();
-        
+
+        if (currentCooldownLeft < 60) leftValue.getComponent(Colour.class).colour = Color.GREEN;
+        else leftValue.getComponent(Colour.class).colour = Color.RED;
+        if (currentCooldownRight < 60) rightValue.getComponent(Colour.class).colour = Color.GREEN;
+        else rightValue.getComponent(Colour.class).colour = Color.RED;
+
         leftValue.getComponent(Size.class).y = (int) (currentCooldownLeft*0.9);
         rightValue.getComponent(Size.class).y = (int) (currentCooldownRight*0.9);
     }

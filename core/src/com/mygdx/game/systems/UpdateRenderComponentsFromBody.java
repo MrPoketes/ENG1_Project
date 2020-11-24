@@ -1,14 +1,11 @@
 package com.mygdx.game.systems;
 
-import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.mygdx.game.Constants;
+import com.mygdx.game.utils.Constants;
 import com.mygdx.game.components.*;
 
 //may want to come up with a better name
@@ -38,8 +35,8 @@ public class UpdateRenderComponentsFromBody extends EntitySystem {
             coordinateOffsetY = (int) (-playerBoat.getPosition().y * Constants.PIXELS_PER_METER + (Gdx.graphics.getHeight() / 2));
         }
         else{
-            coordinateOffsetX = (int) (Gdx.graphics.getWidth() / 2);
-            coordinateOffsetY = (int) (Gdx.graphics.getHeight() / 2);
+            coordinateOffsetX = (Gdx.graphics.getWidth() / 2);
+            coordinateOffsetY = (Gdx.graphics.getHeight() / 2);
         }
 
         for (Entity entity : this.getEngine().getEntitiesFor(family)) {

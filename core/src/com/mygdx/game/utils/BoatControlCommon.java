@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.utils;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
@@ -11,7 +11,7 @@ import com.mygdx.game.components.DynamicBoatStats;
 Class that has a handful of common functions used by PlayerBoatControl and AIBoatControl.
 
  */
-public class BoatCommon {
+public class BoatControlCommon {
 
     /*
     To be run every game tick, this updates things like the boat's cooldowns and the exhaustion.
