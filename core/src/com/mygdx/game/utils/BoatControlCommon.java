@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.utils;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
@@ -11,25 +11,44 @@ import com.mygdx.game.components.DynamicBoatStats;
 Class that has a handful of common functions used by PlayerBoatControl and AIBoatControl.
 
  */
-public class BoatCommon {
+public class BoatControlCommon {
+
+    /*
+    Small helper function to check if the boat has lost all its health.
+     */
+    public static boolean isBoatDead(Entity boat) {
+        return (boat.getComponent(DynamicBoatStats.class).health <= 0);
+    }
 
     /*
     To be run every game tick, this updates things like the boat's cooldowns and the exhaustion.
+    Dead boats don't update, because they're dead.
      */
     public static void boatUpdate(Entity boat) {
+        if (isBoatDead(boat)){
+            return;
+        }
         DynamicBoatStats dynamicBoatStats = boat.getComponent(DynamicBoatStats.class);
 
         dynamicBoatStats.rightCooldown = Math.max(0, dynamicBoatStats.rightCooldown -1);
         dynamicBoatStats.leftCooldown = Math.max(0, dynamicBoatStats.leftCooldown -1);
-        //Exhaustion goes to a minimum of 0.3, and reduces by 0.05% every tick.
-        dynamicBoatStats.exhaustion = Math.max(0.3f, dynamicBoatStats.exhaustion*0.9995);
+        dynamicBoatStats.damageDebounce = Math.max(0, dynamicBoatStats.damageDebounce -1);
+        //Exhaustion goes to a minimum of 0.3, and reduces by 0.01% every tick.
+        dynamicBoatStats.exhaustion = Math.max(0.3f, dynamicBoatStats.exhaustion*0.9999);
+
+        if (!dynamicBoatStats.isFinished) {
+            dynamicBoatStats.time += 1;
+        }
     }
 
     /*
     Identical to propelBoat, but also checks and updates cooldowns and exhaustion.
-    Returns whether the row was performed (if the cooldown is above 120, rowing is not allowed).
+    Returns whether the row was performed (if the cooldown is above 60 or the boat is dead, rowing is not allowed).
      */
     public static boolean rowBoat(Entity boat, boolean isRight, boolean isForwards) {
+        if (isBoatDead(boat)){
+            return false;
+        }
         DynamicBoatStats dynamicBoatStats = boat.getComponent(DynamicBoatStats.class);
         Integer cooldown;
         if (isRight) cooldown = dynamicBoatStats.rightCooldown;
@@ -37,8 +56,8 @@ public class BoatCommon {
 
         if (cooldown < 60){
             propelBoat(boat, isRight, isForwards);
-            //exhaustion increase is relative to remaining cooldown above 0 (and maybe unbalanced)
-            dynamicBoatStats.exhaustion *= 1 - ((double) cooldown) / 6000;
+            //exhaustion increase is relative to remaining cooldown above 0
+            dynamicBoatStats.exhaustion *= 1 - ((double) cooldown) / 10000;
             if (isRight) dynamicBoatStats.rightCooldown = 120;
             else dynamicBoatStats.leftCooldown = 120;
             return true;

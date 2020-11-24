@@ -9,13 +9,17 @@ public class DynamicBoatStats implements Component {
     public double exhaustion;
     public Integer leftCooldown;
     public Integer rightCooldown;
-    public Float time;
+    public Integer damageDebounce;
+    public Integer time;
+    public boolean isFinished;
 
     public DynamicBoatStats(Integer health) {
         this.health = health;
         this.exhaustion = 1f;
         this.leftCooldown = 0;
         this.rightCooldown = 0;
-        this.time = 0f;
+        this.damageDebounce = 0;
+        this.time = 0;
+        this.isFinished = false;
     }
 }

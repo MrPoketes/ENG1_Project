@@ -18,6 +18,7 @@ public class Assets {
 
     private static final String MAINSCREEN_BG = "backgrounds/mainScreenBg.png";
     private static final String INFO_BUTTON = "buttons/infoButton.png";
+    private static final String NEXT_BUTTON = "buttons/nextButton.png";
     private static final String START_BUTTON = "buttons/startButton.png";
     private static final String FONT = "fonts/8BITWONDER";
     private static final String SKIN = "skins/skin.json";
@@ -49,6 +50,7 @@ public class Assets {
     public static TextureRegion backBtn;
     public static TextureRegion goldStar;
     public static TextureRegion grayStar;
+    public static TextureRegion nextBtn;
 
     // Boat texture regions
     public static TextureRegion brownSelect;
@@ -75,6 +77,7 @@ public class Assets {
         manager.load(BACK_BUTTON,Texture.class);
         manager.load(GOLD_STAR,Texture.class);
         manager.load(GRAY_STAR,Texture.class);
+        manager.load(NEXT_BUTTON,Texture.class);
 
         manager.load(BROWN_SELECT,Texture.class);
         manager.load(CYAN_SELECT,Texture.class);
@@ -98,6 +101,7 @@ public class Assets {
         backBtn = new TextureRegion(manager.get(BACK_BUTTON,Texture.class));
         goldStar = new TextureRegion(manager.get(GOLD_STAR,Texture.class));
         grayStar = new TextureRegion(manager.get(GRAY_STAR,Texture.class));
+        nextBtn = new TextureRegion(manager.get(NEXT_BUTTON,Texture.class));
         
         // Boat textureRegion assignment
         brownSelect = new TextureRegion(manager.get(BROWN_SELECT,Texture.class));

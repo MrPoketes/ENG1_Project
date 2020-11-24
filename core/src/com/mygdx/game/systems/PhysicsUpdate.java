@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.components.Box2dBody;
 import com.mygdx.game.components.FixedVelocity;
+import com.mygdx.game.utils.Constants;
 
 public class PhysicsUpdate extends EntitySystem {
 
@@ -27,10 +28,17 @@ public class PhysicsUpdate extends EntitySystem {
         Family fixedVelocityEntities = Family.all(Box2dBody.class, FixedVelocity.class).get();
 
         for (Entity entity : this.getEngine().getEntitiesFor(fixedVelocityEntities)) {
-            float velocityX = entity.getComponent(FixedVelocity.class).velocityX;
-            float velocityY = entity.getComponent(FixedVelocity.class).velocityY;
+            Box2dBody box2dBody =  entity.getComponent(Box2dBody.class);
+            FixedVelocity fixedVelocity =  entity.getComponent(FixedVelocity.class);
+            float velocityX = fixedVelocity.velocityX;
+            //flip the fixedVelocity if the obstacle is near the edge
+            if (velocityX < 0 && box2dBody.body.getPosition().x < (-Constants.RACE_WIDTH/2)+0.5f
+            ||  velocityX > 0 && box2dBody.body.getPosition().x > (+Constants.RACE_WIDTH/2)-0.5f){
+                fixedVelocity.velocityX *= -1;
+                velocityX = fixedVelocity.velocityX;
+            }
+            float velocityY = fixedVelocity.velocityY;
             entity.getComponent(Box2dBody.class).body.setLinearVelocity(new Vector2(velocityX, velocityY));
-            Vector2 test = entity.getComponent(Box2dBody.class).body.getLinearVelocity();
         }
 
         world.step(deltaTime, 6, 2);

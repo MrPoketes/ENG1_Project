@@ -4,20 +4,13 @@ import com.mygdx.game.YorkDragonBoatRace;
 import com.mygdx.game.utils.Assets;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.mygdx.game.screens.*;
-import com.mygdx.game.screens.GameScreen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.mygdx.game.utils.BoatData;
 
 public class MainMenu extends AbstractScreen {
     
@@ -43,21 +36,8 @@ public class MainMenu extends AbstractScreen {
     Vector3 touchPoint;
 
     private Stage stage;
-    private String selectedBoat = "Cyan";
-    
-    /*  For each boat there is a seperate array.
-        The first number indicates top speed, second - accelaration, third - maneuverability, last -   robustness
-        The maximum of stars a boat can have for a stat is 5.
-        The boat list is as follows - cyan,brown,red,white,pink,green
-    */
-    private int[][] starCount = {
-        {3,5,4,1},
-        {3,4,5,2},
-        {5,1,1,5},
-        {5,2,2,3},
-        {4,3,3,3},
-        {4,2,3,3}
-    };
+    private int selectedBoat = 0;
+
     public MainMenu(YorkDragonBoatRace game){
         // The constructor just assigns default values for variables
         super(game);
@@ -82,6 +62,7 @@ public class MainMenu extends AbstractScreen {
         touchPoint = new Vector3();
         Gdx.input.setInputProcessor(stage);
     }
+
     @Override
     public void hide(){
         super.hide();
@@ -98,26 +79,26 @@ public class MainMenu extends AbstractScreen {
     @Override
     public void render(float delta){
         super.render(delta);
-        // Event Listener
-        handleInput();
 
-        // Drawing
+        //Initialise drawing stuff:
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        // Draw background
+
         batch.draw(Assets.mainBg,0,0,1980,1080);
-        // Draw buttons
+
         batch.draw(Assets.startBtn,1200,30,300,150);
         batch.draw(Assets.infoBtn,20,30,300,150);
-        // Draw stat stars
-        drawStars();
-        // Draw boat select
+
+        drawStars(selectedBoat);
         drawBoatSelect();
-        // Draw text
         drawText();
+
         batch.end();
         stage.act(delta);
         stage.draw();
+
+        // Event Listener
+        handleInput();
     }
     // 
     private void drawText(){
@@ -125,7 +106,7 @@ public class MainMenu extends AbstractScreen {
         font.draw(batch,"Acceleration",350,420);
         font.draw(batch,"Maneuverability",350,340);
         font.draw(batch,"Robustness",350,260);
-        font.draw(batch,selectedBoat + " boat",710,580);
+        font.draw(batch,BoatData.getEntityData().get(selectedBoat).get("name") + " boat",710,580);
         font.draw(batch,"Select a boat",710,140);
     }
     // A click event listener that when fired will call appropriate functions to handle the event
@@ -133,18 +114,18 @@ public class MainMenu extends AbstractScreen {
         if(Gdx.input.justTouched()){
             camera.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
 
-            // Event Listener for Start Button click
-            handleScreenChange();
-
             // Event Listener for boats
             handleBoatSelect();
+
+            // Event Listener for Start Button click
+            handleScreenChange();
         }
     }
 
     // Click handler function for changing the screen
     private void handleScreenChange(){
         if(startBtnRect.contains(touchPoint.x,touchPoint.y)){
-            game.setScreen(new GameScreen(game,selectedBoat));
+            game.setScreen(new GameScreen(game, 1, selectedBoat));
         }
         // Event Listener for Info button click
         else if(infoBtnRect.contains(touchPoint.x,touchPoint.y)){
@@ -155,55 +136,31 @@ public class MainMenu extends AbstractScreen {
     // Click handler function for changing the selected boat
     private void handleBoatSelect(){
         if(cyanRect.contains(touchPoint.x,touchPoint.y)){
-            selectedBoat = "Cyan";
+            selectedBoat = 0;
         }
         else if(brownRect.contains(touchPoint.x,touchPoint.y)){
-            selectedBoat = "Brown";
+            selectedBoat = 1;
         }
         else if(redRect.contains(touchPoint.x,touchPoint.y)){
-            selectedBoat = "Red";
+            selectedBoat = 2;
         }
         else if(whiteRect.contains(touchPoint.x,touchPoint.y)){
-            selectedBoat = "White";
+            selectedBoat = 3;
         }
         else if(pinkRect.contains(touchPoint.x,touchPoint.y)){
-            selectedBoat = "Pink";
+            selectedBoat = 4;
         }
         else if(greenRect.contains(touchPoint.x,touchPoint.y)){
-            selectedBoat = "Green";
+            selectedBoat = 5;
         }
     }
 
-    /*  Function that draws stars for stats of the boat.
-        Checks what the current selected boat is and class the function starLoop giving as a parameter
-        an index for starCount
+    /*
+    Function that draws stars for stats of the boat.
+    Checks what the current selected boat is and loops through the boat stats to draw the needed amount of gold and gray stars
     */
-    private void drawStars(){
-        int index = 0;
-        if(selectedBoat == "Cyan"){
-            starLoop(0);
-        }
-        else if(selectedBoat == "Brown"){
-            starLoop(1);
-        }
-        else if(selectedBoat == "Red"){
-            starLoop(2);
-        }
-        else if(selectedBoat == "White"){
-            starLoop(3);
-        }
-        else if(selectedBoat == "Pink"){
-            starLoop(4);
-        }
-        else if(selectedBoat == "Green"){
-            starLoop(5);
-        }
-    }
-    /* A utility function to loop through boat stats and draw the needed amount of gold and gray stars
-    for each stat
-    */ 
-    private void starLoop(int boatIndex){
-        int[] stats = starCount[boatIndex];
+    private void drawStars(int boatIndex){
+        int[] stats = BoatData.starCount[boatIndex];
         int[] yLevels = {460,380,300,220};
         for(int i=0;i!=4;i++){
             int goldenStars = 0;
