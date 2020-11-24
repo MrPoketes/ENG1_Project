@@ -1,34 +1,26 @@
 package com.mygdx.game.screens;
-import com.badlogic.ashley.core.Family;
 import com.mygdx.game.YorkDragonBoatRace;
-import com.mygdx.game.utils.Assets;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.entities.*;
 import com.mygdx.game.systems.*;
 import com.mygdx.game.components.*;
-import com.badlogic.gdx.Input;
+
 import static com.badlogic.gdx.Gdx.graphics;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.*;
-import com.mygdx.game.screens.LeaderboardScreen;
 import com.mygdx.game.utils.BoatData;
+import com.mygdx.game.utils.Constants;
 
 public class GameScreen extends AbstractScreen {
 
@@ -37,8 +29,8 @@ public class GameScreen extends AbstractScreen {
     private SpriteBatch batch;
     World world;
     private Stage stage;
-    private ShapeRenderer shape;
-    // This variable is used to determine what boats will the CPU have.
+    private ShapeRenderer shapeRenderer;
+    //List of available boats. Used to ensure no duplicates are taken.
     private List<Integer> boatNames = new ArrayList<Integer>(){{
         add(0);
         add(1);
@@ -47,42 +39,45 @@ public class GameScreen extends AbstractScreen {
         add(4);
         add(5);
     }};
-    private Entity playerBoat;
-    private long startTime;
-    private List<Long> time = new ArrayList<>();
 
-    public GameScreen(YorkDragonBoatRace game, int selectedBoat){
+    public GameScreen(YorkDragonBoatRace game, int legNumber, int selectedBoat){
         super(game);
 		world = new World(new Vector2(0,0), true);
 		batch = new SpriteBatch();
         engine = new Engine();
-        shape = new ShapeRenderer();
+        shapeRenderer = new ShapeRenderer();
 
-        addingSystems();
+        initialiseSystems(engine);
         //Create the finish line.
-        engine.addEntity(new Line(world,0,20,10f,0.1f, "lines/checkpoint.png"));
+        engine.addEntity(new Line(world,0, Constants.RACE_LENGTH,10f,0.1f, "lines/checkpoint.png"));
+        //Create the edges.
+        engine.addEntity(new Obstacle(world, -Constants.RACE_WIDTH, Constants.RACE_LENGTH/2, Constants.RACE_WIDTH, Constants.RACE_LENGTH*1.5f, 0f, 0f, "lines/riverEdge.png"));
+        engine.addEntity(new Obstacle(world, +Constants.RACE_WIDTH, Constants.RACE_LENGTH/2, Constants.RACE_WIDTH, Constants.RACE_LENGTH*1.5f, 0f, 0f, "lines/riverEdge.png"));
         //Create the player's boat.
-        engine.addEntity(new PlayerBoat( world, 0, 0, BoatData.getEntityData().get(selectedBoat)));
+        engine.addEntity(new PlayerBoat( world, -1f, 0, BoatData.getEntityData().get(selectedBoat)));
         boatNames.remove((Integer) selectedBoat);
 
         cpuSetup();
         createCollisionListener();
         addSystemBars();
-        obstacleSetup();
-        startTime = System.currentTimeMillis();
+        obstacleSetup(legNumber);
     }
     @Override
     public void resize(int width,int height){
         batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
     }
-    private void addingSystems(){
-        engine.addSystem(new RenderSprites(batch));
-		engine.addSystem(new RenderText(batch));
+
+    /*
+    Helper function to initialise all the systems.
+     */
+    private void initialiseSystems(Engine engine){
+        engine.addSystem(new RenderSprites(this.batch));
+		engine.addSystem(new RenderText(this.batch));
 		engine.addSystem(new UpdateRenderComponentsFromBody());
-		engine.addSystem(new PhysicsUpdate(world));
+		engine.addSystem(new PhysicsUpdate(this.world));
 		engine.addSystem(new PlayerBoatControl());
         engine.addSystem(new CPUBoatControl());
-        engine.addSystem(new RenderBoxes(shape));
+        engine.addSystem(new RenderBoxes(this.shapeRenderer));
         engine.addSystem(new HealthBarSystem());
         engine.addSystem(new ExhaustionBarSystem());
         engine.addSystem(new CooldownBarSystem());
@@ -93,21 +88,21 @@ public class GameScreen extends AbstractScreen {
     */
     private void cpuSetup(){
         Random rand = new Random();
-        float posX = -1f;
+        float posX = -Constants.RACE_WIDTH/2+1;
         
-        for(int i=0;i!=4;i++){
+        for(int i=0;i<=4;i++){
             //skip over the player's boat
-            if(posX==0f){
-                posX+=0.5f;
+            if(posX==-1f){
+                posX+=1f;
             }
-            int selectedBoat = rand.nextInt(boatNames.size()-1);
-            engine.addEntity(new CPUBoat( world, posX, 0, BoatData.getEntityData().get(boatNames.get(selectedBoat))));
-            boatNames.remove(selectedBoat);
-            posX+=0.5f;
+            int selectedBoatIndex = rand.nextInt(boatNames.size());
+            engine.addEntity(new CPUBoat( world, posX, 0, BoatData.getEntityData().get(boatNames.get(selectedBoatIndex))));
+            boatNames.remove(selectedBoatIndex);
+            posX+=1f;
         }
     }
-    // Method to draw the Health, exhaustion and cooldown bars.
-    // Currently not functional 
+
+    // Adds all HUD entities (health/exhaustion/cooldown bars).
     private void addSystemBars(){
         engine.addEntity(new Box(525,755, 510,30, "outlineBarHealth", Color.WHITE));
 		engine.addEntity(new Box(525,715, 510,30, "outlineBarExhaustion", Color.WHITE));
@@ -120,12 +115,59 @@ public class GameScreen extends AbstractScreen {
 		engine.addEntity(new LeftCooldownBox(730,180, 20, 100, "leftCooldown", Color.RED));
 		engine.addEntity(new RightCooldownBox(770,180, 20, 80, "rightCooldown", Color.RED));
     }
-    // Method to draw obstacles randomly in the map
-    // Not functional
-    private void obstacleSetup(){
 
+    /*
+    Returns a random appropriate obstacle sprite, given if the obstacle is static or not.
+     */
+    private String getObstacleSprite(boolean isStatic){
+        Random random = new Random();
+        List<String> options;
+        if (isStatic){
+            options = new ArrayList<String>(){{
+                add("obstacles/rock1.png");
+                add("obstacles/rock2.png");
+                add("obstacles/rock3.png");
+            }};
+        }
+        else{
+            options = new ArrayList<String>(){{
+                add("obstacles/branch1.png");
+                //add("obstacles/branch2.png"); //branch2 is too long and looks like a rock when squished
+                add("obstacles/branch3.png");
+            }};
+        }
+        return options.get(random.nextInt(options.size()));
     }
 
+    /*
+    Populates the map with obstacles.
+    To ensure obstacles don't collide, the map is split into rows of 0.3m height.
+        Only one obstacle can be placed on any given row.
+        Higher legNumbers will mean more rows have obstacles, more obstacles will move, and moving obstacles will move faster.
+     */
+    private void obstacleSetup(int legNumber){
+        Random random = new Random();
+        for(float i = 1f; i < Constants.RACE_LENGTH; i += 0.3f){
+            //Place obstacle?
+            if (random.nextInt(10) <= legNumber){
+                //Is obstacle moving?
+                float movementSpeed = 0f;
+                if (random.nextInt(10) <= legNumber){
+                    movementSpeed = random.nextFloat() * 0.2f * legNumber;
+                    if (random.nextBoolean()) movementSpeed *= -1;
+                }
+                //River is 8m wide, centered on 0.
+                float posX = (random.nextFloat() * Constants.RACE_WIDTH) - Constants.RACE_WIDTH/2;
+                String sprite = getObstacleSprite(movementSpeed == 0f);
+                engine.addEntity(new Obstacle(this.world, posX, i, 0.2f, 0.2f, movementSpeed, 0, sprite));
+            }
+        }
+    }
+
+    //Collision handling logic:
+        //Ignore collisions that do not contain a boat.
+        //If the collision is with the finish line, stop the timer, and if it is the player boat, end the race.
+        //If the collision is with anything else, reduce health of all involved boats.
     private void createCollisionListener() {
         world.setContactListener(new ContactListener() {
 
@@ -135,12 +177,6 @@ public class GameScreen extends AbstractScreen {
                 //Userdata for our bodies is always an entity, so this cast is safe.
                 Entity entityA = (Entity) contact.getFixtureA().getBody().getUserData();
                 Entity entityB = (Entity) contact.getFixtureB().getBody().getUserData();
-
-                //Collision handling logic:
-                    //Ignore collisions that do not contain a boat.
-                    //If the collision is with the finish line, stop the timer, and if it is the player boat, end the race.
-                    //If the collision is with anything else, reduce health of all involved boats.
-
 
                 boolean isEntityABoat = entityA.getComponent(DynamicBoatStats.class) != null;
                 boolean isEntityBBoat = entityB.getComponent(DynamicBoatStats.class) != null;
