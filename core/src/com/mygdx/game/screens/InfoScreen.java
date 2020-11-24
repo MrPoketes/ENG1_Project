@@ -44,12 +44,12 @@ public class InfoScreen extends AbstractScreen {
         batch.begin();
         batch.draw(Assets.mainBg,0,0,1980,1080);
         batch.draw(Assets.backBtn,1200,30,300,150);
-        font.draw(batch,"Line 1",70,800);
-        font.draw(batch,"Line 2",70,750);
-        font.draw(batch,"Line 3",70,700);
-        font.draw(batch,"Line 4",70,650);
-        font.draw(batch,"Line 5",70,600);
-        font.draw(batch,"Line 6",70,550);
+        font.draw(batch,"Instructions for the York Dragon Boat Race.",70,800);
+        font.draw(batch,"Controls - Buttons Q and E rows the boat, buttons A and D rows the boat backwards.",70,750);
+        font.draw(batch,"The first leg is a practice leg and is not timed. After the practice leg you will race in 2 timed legs.",70,700);
+        font.draw(batch,"Out of the 3 legs best time is picked and checked against the competition.",70,650);
+        font.draw(batch,"You must be top 4 to qualify for the finals",70,600);
+        font.draw(batch,"Have fun!",70,550);
         batch.end();
         stage.act(delta);
         stage.draw();

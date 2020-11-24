@@ -70,7 +70,6 @@ public class GameScreen extends AbstractScreen {
         boatNames.remove((Integer) selectedBoat);
 
         cpuSetup();
-        createCollisionListener();
         addSystemBars();
         obstacleSetup(legNumber);
         Gdx.input.setInputProcessor(stage);
@@ -209,14 +208,6 @@ public class GameScreen extends AbstractScreen {
                 engine.addEntity(new Obstacle(this.world, posX, i, 0.2f, 0.2f, movementSpeed, 0, sprite));
             }
         }
-    }
-
-    //Collision handling logic:
-        //Ignore collisions that do not contain a boat.
-        //If the collision is with the finish line, stop the timer, and if it is the player boat, end the race.
-        //If the collision is with anything else, reduce health of all involved boats.
-    private void createCollisionListener() {
-
     }
 
     @Override

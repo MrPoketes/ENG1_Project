@@ -14,7 +14,12 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+/*
+* The whole purpose of this class is loading sprites into the AssetManager to use in MainMenu, InfoScreen, ResultsScreen
+*/
 public class Assets {
+
+    // Declaring file paths for each sprite
 
     private static final String MAINSCREEN_BG = "backgrounds/mainScreenBg.png";
     private static final String INFO_BUTTON = "buttons/infoButton.png";
@@ -44,6 +49,8 @@ public class Assets {
 
     private static AssetManager manager = new AssetManager();
 
+    // Initial declaration of all TextureRegion
+
     public static TextureRegion mainBg;
     public static TextureRegion infoBtn;
     public static TextureRegion startBtn;
@@ -70,7 +77,7 @@ public class Assets {
 
     @SuppressWarnings("deprecation")
     public static void load(){
-
+        
         manager.load(MAINSCREEN_BG,Texture.class);
         manager.load(INFO_BUTTON,Texture.class);
         manager.load(START_BUTTON,Texture.class);

@@ -9,7 +9,7 @@ public class YorkDragonBoatRace extends Game {
 	@Override
 	public void create () {
 		Assets.load();
-		super.setScreen(new MainMenu(this));
+		super.setScreen(new MainMenu(this)); //Takes the user to the MainMenu
 	}
 
 	@Override
