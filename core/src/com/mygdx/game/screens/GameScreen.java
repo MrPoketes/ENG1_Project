@@ -57,7 +57,7 @@ public class GameScreen extends AbstractScreen {
         boatNames.add("Green");
 
         addingSystems();
-        engine.addEntity(new Line(world,0,20,1,1, "lines/checkpoint.png"));
+        engine.addEntity(new Line(world,0,20,50f,0.5f, "lines/checkpoint.png"));
         playerSetup(selectedBoat);
         cpuSetup();
         createCollisionListener();
@@ -188,6 +188,7 @@ public class GameScreen extends AbstractScreen {
                 boolean isFinishLine = (entityA.getComponent(FinishLine.class) != null
                         || entityB.getComponent(FinishLine.class) != null);
 
+                System.out.println("Collision occurred.");
                 //No special logic needs to occur if it's not a collision between boats.
                 if (!isEntityABoat && !isEntityBBoat){
                     return;
@@ -201,6 +202,9 @@ public class GameScreen extends AbstractScreen {
                     }
                     if (isInvolvingPlayer){
                         game.setScreen(new LeaderboardScreen(game));
+                    }
+                    else{
+                        System.out.println("CPU finished race.");
                     }
                 }
                 //Non-finish line collisions are collisions with obstacles or other boats.
