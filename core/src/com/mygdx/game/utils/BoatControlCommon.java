@@ -14,9 +14,20 @@ Class that has a handful of common functions used by PlayerBoatControl and AIBoa
 public class BoatControlCommon {
 
     /*
+    Small helper function to check if the boat has lost all its health.
+     */
+    public static boolean isBoatDead(Entity boat) {
+        return (boat.getComponent(DynamicBoatStats.class).health <= 0);
+    }
+
+    /*
     To be run every game tick, this updates things like the boat's cooldowns and the exhaustion.
+    Dead boats don't update, because they're dead.
      */
     public static void boatUpdate(Entity boat) {
+        if (isBoatDead(boat)){
+            return;
+        }
         DynamicBoatStats dynamicBoatStats = boat.getComponent(DynamicBoatStats.class);
 
         dynamicBoatStats.rightCooldown = Math.max(0, dynamicBoatStats.rightCooldown -1);
@@ -32,9 +43,12 @@ public class BoatControlCommon {
 
     /*
     Identical to propelBoat, but also checks and updates cooldowns and exhaustion.
-    Returns whether the row was performed (if the cooldown is above 120, rowing is not allowed).
+    Returns whether the row was performed (if the cooldown is above 60 or the boat is dead, rowing is not allowed).
      */
     public static boolean rowBoat(Entity boat, boolean isRight, boolean isForwards) {
+        if (isBoatDead(boat)){
+            return false;
+        }
         DynamicBoatStats dynamicBoatStats = boat.getComponent(DynamicBoatStats.class);
         Integer cooldown;
         if (isRight) cooldown = dynamicBoatStats.rightCooldown;

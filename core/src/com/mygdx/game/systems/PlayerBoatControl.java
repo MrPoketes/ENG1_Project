@@ -4,6 +4,7 @@ package com.mygdx.game.systems;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.mygdx.game.utils.BoatControlCommon;
@@ -16,9 +17,11 @@ public class PlayerBoatControl extends EntitySystem {
     private boolean aDown = false;
     private boolean eDown = false;
     private boolean dDown = false;
+    private Signal moveToResultsSignal;
 
-    public PlayerBoatControl() {
+    public PlayerBoatControl(Signal signal) {
         super();
+        this.moveToResultsSignal = signal;
         this.family = Family.all(PlayerControlled.class, BoatStats.class, DynamicBoatStats.class).get();
     }
 
@@ -28,6 +31,10 @@ public class PlayerBoatControl extends EntitySystem {
         assert(this.getEngine().getEntitiesFor(family).size() <= 1);
         if (this.getEngine().getEntitiesFor(family).size() == 1){
             Entity playerBoat = this.getEngine().getEntitiesFor(family).first();
+
+            if (BoatControlCommon.isBoatDead(playerBoat)){
+                moveToResultsSignal.dispatch(null);
+            }
 
             /*
             For all of Q, A, E and D, row the boat in the corresponding direction if the key is pressed, but not if it

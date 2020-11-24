@@ -4,6 +4,7 @@ package com.mygdx.game.systems;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
+import com.mygdx.game.components.Box2dBody;
 import com.mygdx.game.utils.BoatControlCommon;
 import com.mygdx.game.components.BoatStats;
 import com.mygdx.game.components.CPUControlled;
@@ -31,6 +32,7 @@ public class CPUBoatControl extends EntitySystem {
             }
             if (entity.getComponent(DynamicBoatStats.class).leftCooldown == 0){
                 BoatControlCommon.rowBoat(entity, false, true);
+                System.out.println(entity.getComponent(Box2dBody.class).body.getPosition().y);
             }
             BoatControlCommon.boatUpdate(entity);
         }

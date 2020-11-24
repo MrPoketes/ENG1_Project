@@ -19,6 +19,20 @@ public class BoatData {
     };
 
     /*
+    Returns the index of a boat from it's name.
+    Used to get the index of a boat from its entity.
+     */
+    public static Integer getIndexFromName(String name){
+        if (name.equals("Cyan")) return 0;
+        else if (name.equals("Brown")) return 1;
+        else if (name.equals("Red")) return 2;
+        else if (name.equals("White")) return 3;
+        else if (name.equals("Pink")) return 4;
+        else if (name.equals("Green")) return 5;
+        return -1;
+    }
+
+    /*
     Returns a dictionary of dictionaries, where the subdictionaries contain the corresponding data about the boat:
     name, sprite, sizeX, sizeY, topSpeed, acceleration, maneuverability, robustness
      */

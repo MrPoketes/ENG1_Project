@@ -62,6 +62,7 @@ public class MainMenu extends AbstractScreen {
         touchPoint = new Vector3();
         Gdx.input.setInputProcessor(stage);
     }
+
     @Override
     public void hide(){
         super.hide();
@@ -78,8 +79,6 @@ public class MainMenu extends AbstractScreen {
     @Override
     public void render(float delta){
         super.render(delta);
-        // Event Listener
-        handleInput();
 
         //Initialise drawing stuff:
         batch.setProjectionMatrix(camera.combined);
@@ -97,6 +96,9 @@ public class MainMenu extends AbstractScreen {
         batch.end();
         stage.act(delta);
         stage.draw();
+
+        // Event Listener
+        handleInput();
     }
     // 
     private void drawText(){
@@ -112,11 +114,11 @@ public class MainMenu extends AbstractScreen {
         if(Gdx.input.justTouched()){
             camera.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(),0));
 
-            // Event Listener for Start Button click
-            handleScreenChange();
-
             // Event Listener for boats
             handleBoatSelect();
+
+            // Event Listener for Start Button click
+            handleScreenChange();
         }
     }
 

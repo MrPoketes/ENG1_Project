@@ -1,8 +1,9 @@
 package com.mygdx.game.screens;
+import com.badlogic.ashley.signals.Signal;
+import com.badlogic.gdx.Gdx;
 import com.mygdx.game.YorkDragonBoatRace;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -11,25 +12,30 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.entities.*;
 import com.mygdx.game.systems.*;
-import com.mygdx.game.components.*;
 
 import static com.badlogic.gdx.Gdx.graphics;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
-import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.physics.box2d.*;
+
 import com.mygdx.game.utils.BoatData;
 import com.mygdx.game.utils.Constants;
+import com.mygdx.game.utils.MoveToResults;
 
 public class GameScreen extends AbstractScreen {
 
-    private Engine engine;
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
-    World world;
     private Stage stage;
+    private Engine engine;
+    private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
+
+    private World world;
+    private int selectedBoat;
+    private int legNumber;
+    private HashMap<Integer, Integer> times;
+    private Signal moveToResultsSignal;
     //List of available boats. Used to ensure no duplicates are taken.
     private List<Integer> boatNames = new ArrayList<Integer>(){{
         add(0);
@@ -40,12 +46,18 @@ public class GameScreen extends AbstractScreen {
         add(5);
     }};
 
-    public GameScreen(YorkDragonBoatRace game, int legNumber, int selectedBoat){
+    public GameScreen(YorkDragonBoatRace game, int legNumber, int selectedBoat, HashMap<Integer, Integer> times){
         super(game);
-		world = new World(new Vector2(0,0), true);
-		batch = new SpriteBatch();
+        world = new World(new Vector2(0,0), true);
+        batch = new SpriteBatch();
         engine = new Engine();
+        stage = new Stage();
         shapeRenderer = new ShapeRenderer();
+
+        this.selectedBoat = selectedBoat;
+        this.legNumber = legNumber;
+        this.times = times;
+        this.moveToResultsSignal = new Signal();
 
         initialiseSystems(engine);
         //Create the finish line.
@@ -61,7 +73,23 @@ public class GameScreen extends AbstractScreen {
         createCollisionListener();
         addSystemBars();
         obstacleSetup(legNumber);
+        Gdx.input.setInputProcessor(stage);
     }
+
+    /*
+    Convenience constructor - creates the GameScreen with a blank set of times.
+     */
+    public GameScreen(YorkDragonBoatRace game, int legNumber, int selectedBoat){
+        this(game, legNumber, selectedBoat, new HashMap<Integer, Integer>(){{
+            put(0,0);
+            put(1,0);
+            put(2,0);
+            put(3,0);
+            put(4,0);
+            put(5,0);
+        }});
+    }
+
     @Override
     public void resize(int width,int height){
         batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
@@ -75,30 +103,49 @@ public class GameScreen extends AbstractScreen {
 		engine.addSystem(new RenderText(this.batch));
 		engine.addSystem(new UpdateRenderComponentsFromBody());
 		engine.addSystem(new PhysicsUpdate(this.world));
-		engine.addSystem(new PlayerBoatControl());
+		engine.addSystem(new PlayerBoatControl(moveToResultsSignal));
         engine.addSystem(new CPUBoatControl());
         engine.addSystem(new RenderBoxes(this.shapeRenderer));
         engine.addSystem(new HealthBarSystem());
         engine.addSystem(new ExhaustionBarSystem());
         engine.addSystem(new CooldownBarSystem());
+        engine.addSystem(new MoveToResults(engine, game, legNumber, selectedBoat, times, moveToResultsSignal));
+        engine.addSystem(new CollisionLogic(world, moveToResultsSignal));
     }
     /*
     * Creates CPU boats.
     * Should be called after the player's boat has been created to avoid duplicates.
     */
     private void cpuSetup(){
-        Random rand = new Random();
-        float posX = -Constants.RACE_WIDTH/2+1;
-        
-        for(int i=0;i<=4;i++){
-            //skip over the player's boat
-            if(posX==-1f){
-                posX+=1f;
+        if (legNumber != 4) {
+            Random rand = new Random();
+            float posX = -Constants.RACE_WIDTH / 2 + 2;
+
+            for (int i = 0; i <= 4; i++) {
+                //skip over the player's boat
+                if (posX == -1f) {
+                    posX += 1f;
+                }
+                int selectedBoatIndex = rand.nextInt(boatNames.size());
+                engine.addEntity(new CPUBoat(world, posX, 0, BoatData.getEntityData().get(boatNames.get(selectedBoatIndex))));
+                boatNames.remove(selectedBoatIndex);
+                posX += 1f;
             }
-            int selectedBoatIndex = rand.nextInt(boatNames.size());
-            engine.addEntity(new CPUBoat( world, posX, 0, BoatData.getEntityData().get(boatNames.get(selectedBoatIndex))));
-            boatNames.remove(selectedBoatIndex);
-            posX+=1f;
+        }
+        else{
+            Random rand = new Random();
+            float posX = -Constants.RACE_WIDTH / 2 + 3;
+
+            for (int i = 0; i <= 2; i++) {
+                //skip over the player's boat
+                if (posX == -1f) {
+                    posX += 1f;
+                }
+                int selectedBoatIndex = rand.nextInt(boatNames.size());
+                engine.addEntity(new CPUBoat(world, posX, 0, BoatData.getEntityData().get(boatNames.get(selectedBoatIndex))));
+                boatNames.remove(selectedBoatIndex);
+                posX += 1f;
+            }
         }
     }
 
@@ -169,63 +216,7 @@ public class GameScreen extends AbstractScreen {
         //If the collision is with the finish line, stop the timer, and if it is the player boat, end the race.
         //If the collision is with anything else, reduce health of all involved boats.
     private void createCollisionListener() {
-        world.setContactListener(new ContactListener() {
 
-            @Override
-            public void beginContact(Contact contact) {
-                //Once a collision is detected, identify the participating entities.
-                //Userdata for our bodies is always an entity, so this cast is safe.
-                Entity entityA = (Entity) contact.getFixtureA().getBody().getUserData();
-                Entity entityB = (Entity) contact.getFixtureB().getBody().getUserData();
-
-                boolean isEntityABoat = entityA.getComponent(DynamicBoatStats.class) != null;
-                boolean isEntityBBoat = entityB.getComponent(DynamicBoatStats.class) != null;
-                boolean isInvolvingPlayer = (entityA.getComponent(PlayerControlled.class) != null
-                        || entityB.getComponent(PlayerControlled.class) != null);
-                boolean isFinishLine = (entityA.getComponent(FinishLine.class) != null
-                        || entityB.getComponent(FinishLine.class) != null);
-
-                System.out.println("Collision occurred.");
-                //No special logic needs to occur if it's not a collision between boats.
-                if (!isEntityABoat && !isEntityBBoat){
-                    return;
-                }
-                if (isFinishLine){
-                    if (isEntityABoat){
-                        entityA.getComponent(DynamicBoatStats.class).isFinished = true;
-                    }
-                    if (isEntityBBoat){
-                        entityB.getComponent(DynamicBoatStats.class).isFinished = true;
-                    }
-                    if (isInvolvingPlayer){
-                        game.setScreen(new LeaderboardScreen(game));
-                    }
-                    else{
-                        System.out.println("CPU finished race.");
-                    }
-                }
-                //Non-finish line collisions are collisions with obstacles or other boats.
-                else {
-                    //If the boat has taken damage too recently (damageDebounce is above 0), do not damage it.
-                    if (isEntityABoat && entityA.getComponent(DynamicBoatStats.class).damageDebounce == 0){
-                        entityA.getComponent(DynamicBoatStats.class).health -= 1;
-                        entityA.getComponent(DynamicBoatStats.class).damageDebounce = 180;
-                    }
-                    if (isEntityBBoat && entityB.getComponent(DynamicBoatStats.class).damageDebounce == 0){
-                        entityB.getComponent(DynamicBoatStats.class).health -= 1;
-                        entityB.getComponent(DynamicBoatStats.class).damageDebounce = 180;
-                    }
-                }
-            }
-            //not using any of these
-            @Override
-            public void endContact(Contact contact){}
-            @Override
-            public void preSolve(Contact contact, Manifold manifold){}
-            @Override
-            public void postSolve(Contact contact, ContactImpulse contactImpulse){}
-
-        });
     }
 
     @Override

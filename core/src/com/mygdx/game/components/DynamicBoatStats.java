@@ -10,7 +10,7 @@ public class DynamicBoatStats implements Component {
     public Integer leftCooldown;
     public Integer rightCooldown;
     public Integer damageDebounce;
-    public Float time;
+    public Integer time;
     public boolean isFinished;
 
     public DynamicBoatStats(Integer health) {
@@ -19,7 +19,7 @@ public class DynamicBoatStats implements Component {
         this.leftCooldown = 0;
         this.rightCooldown = 0;
         this.damageDebounce = 0;
-        this.time = 0f;
+        this.time = 0;
         this.isFinished = false;
     }
 }
